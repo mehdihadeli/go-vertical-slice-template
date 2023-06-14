@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go-vertical-slice-template" type="GoApplicationRunConfiguration" factoryName="Go Application" singleton="false">
+    <module name="go-vertical-slice-template" />
+    <working_directory value="$PROJECT_DIR$" />
+    <kind value="PACKAGE" />
+    <package value="github.com/go-vertical-slice-template/cmd/app" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/cmd/app/main.go" />
+    <method v="2" />
+  </configuration>
+</component>
