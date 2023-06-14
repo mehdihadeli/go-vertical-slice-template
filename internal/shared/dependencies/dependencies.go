@@ -1,4 +1,4 @@
-package di_cqrs
+package dependencies
 
 import (
 	"log"

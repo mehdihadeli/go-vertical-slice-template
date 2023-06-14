@@ -7,8 +7,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	di_cqrs "github.com/go-vertical-slice-template"
 	applicationbuilder "github.com/go-vertical-slice-template/internal/app/application_builder"
+	"github.com/go-vertical-slice-template/internal/shared/dependencies"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 
 	builder := applicationbuilder.NewApplicationBuilder()
 
-	err := builder.Services.Add(di_cqrs.Dependencies...)
+	err := builder.Services.Add(dependencies.Dependencies...)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
