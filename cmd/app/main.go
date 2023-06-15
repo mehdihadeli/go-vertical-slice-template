@@ -2,13 +2,11 @@ package main
 
 import (
 	"context"
-	"log"
 	"os"
 	"os/signal"
 	"syscall"
 
 	applicationbuilder "github.com/go-vertical-slice-template/internal/app/application_builder"
-	"github.com/go-vertical-slice-template/internal/shared/dependencies"
 )
 
 func main() {
@@ -17,17 +15,23 @@ func main() {
 
 	builder := applicationbuilder.NewApplicationBuilder()
 
-	err := builder.Services.Add(dependencies.Dependencies...)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	builder.AddLogger()
+	builder.AddEcho()
+	builder.AddGorm()
+	builder.AddRepositories()
+	builder.AddControllers()
 
 	app := builder.Build()
 
 	// configure services
+	err := app.MigrateDatabase()
+	if err != nil {
+		app.Logger.Fatal("Error in migrating database", err)
+	}
+
 	err = app.ConfigMediator()
 	if err != nil {
-		log.Fatal("Error in setting mediator handlers", err)
+		app.Logger.Fatal("Error in setting mediator handlers", err)
 	}
 
 	app.MapEndpoints()

@@ -2,15 +2,16 @@ package application
 
 import (
 	"context"
-	"log"
 
 	"github.com/labstack/echo/v4"
 	"github.com/sarulabs/di"
+	"go.uber.org/zap"
 )
 
 type Application struct {
 	Container di.Container
 	Echo      *echo.Echo
+	Logger    *zap.SugaredLogger
 }
 
 func (a *Application) Run(ctx context.Context) {
@@ -19,12 +20,12 @@ func (a *Application) Run(ctx context.Context) {
 	err := a.Echo.Start(":9080")
 
 	if err != nil {
-		log.Fatal("Error starting Server", err)
+		a.Logger.Fatal("Error starting Server", err)
 	}
 
 	<-ctx.Done()
 
 	if err := a.Echo.Shutdown(ctx); err != nil {
-		log.Fatal("(Shutdown) err", err)
+		a.Logger.Fatal("(Shutdown) err", err)
 	}
 }

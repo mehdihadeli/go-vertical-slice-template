@@ -3,38 +3,37 @@ package repository
 import (
 	"context"
 
-	"github.com/go-vertical-slice-template/internal/products/contracts"
-	"github.com/go-vertical-slice-template/internal/products/models"
+	"go.uber.org/zap"
+	"gorm.io/gorm"
 
 	uuid "github.com/satori/go.uuid"
+
+	"github.com/go-vertical-slice-template/internal/products/contracts"
+	"github.com/go-vertical-slice-template/internal/products/models"
 )
 
 type InMemoryProductRepository struct {
+	db     *gorm.DB
+	logger *zap.SugaredLogger
 }
 
-var products []*models.Product
-
-func NewInMemoryProductRepository() contracts.ProductRepository {
-	return &InMemoryProductRepository{}
+func NewInMemoryProductRepository(db *gorm.DB, logger *zap.SugaredLogger) contracts.ProductRepository {
+	return &InMemoryProductRepository{db: db, logger: logger}
 }
 
 func (p *InMemoryProductRepository) CreateProduct(ctx context.Context, product *models.Product) (*models.Product, error) {
-
-	products = append(products, product)
-
+	err := p.db.WithContext(ctx).Create(product).Error
+	if err != nil {
+		return nil, err
+	}
 	return product, nil
 }
 
 func (p *InMemoryProductRepository) GetProductById(ctx context.Context, uuid uuid.UUID) (*models.Product, error) {
-
 	var product *models.Product
-
-	for _, p := range products {
-
-		if p.ProductID == uuid {
-			product = p
-		}
+	err := p.db.WithContext(ctx).First(&product, "product_id = ?", uuid).Error
+	if err != nil {
+		return nil, err
 	}
-
 	return product, nil
 }
