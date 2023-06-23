@@ -3,15 +3,19 @@ module github.com/go-vertical-slice-template
 go 1.20
 
 require (
+	emperror.dev/errors v0.8.1
+	github.com/caarlos0/env/v8 v8.0.0
 	github.com/glebarez/sqlite v1.8.0
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/joho/godotenv v1.5.1
 	github.com/labstack/echo/v4 v4.10.2
+	github.com/mcuadros/go-defaults v1.2.0
 	github.com/mehdihadeli/go-mediatr v1.1.10
 	github.com/pkg/errors v0.9.1
 	github.com/sarulabs/di v2.0.0+incompatible
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.16.0
+	github.com/stretchr/testify v1.8.3
 	github.com/swaggo/echo-swagger v1.4.0
 	github.com/swaggo/swag v1.16.1
 	go.uber.org/zap v1.24.0
@@ -19,12 +23,11 @@ require (
 )
 
 require (
-	emperror.dev/errors v0.8.1 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/ahmetb/go-linq/v3 v3.2.0 // indirect
-	github.com/caarlos0/env/v8 v8.0.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/glebarez/go-sqlite v1.21.1 // indirect
@@ -48,6 +51,7 @@ require (
 	github.com/mattn/go-isatty v0.0.17 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.8 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	github.com/spf13/cast v1.5.1 // indirect

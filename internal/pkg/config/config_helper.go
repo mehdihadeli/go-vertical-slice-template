@@ -7,6 +7,7 @@ import (
 
 	"emperror.dev/errors"
 	"github.com/caarlos0/env/v8"
+	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
 
 	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
@@ -70,6 +71,9 @@ func BindConfigKey[T any](configKey string, environments ...environemnt.Environm
 	if err := env.Parse(cfg); err != nil {
 		fmt.Printf("%+v\n", err)
 	}
+
+	// https://github.com/mcuadros/go-defaults
+	defaults.SetDefaults(cfg)
 
 	return cfg, nil
 }
