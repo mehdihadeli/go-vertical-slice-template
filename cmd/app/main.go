@@ -1,25 +1,14 @@
 package main
 
-import (
-	"context"
-	"os"
-	"os/signal"
-	"syscall"
-
-	applicationbuilder "github.com/go-vertical-slice-template/internal/app/application_builder"
-)
+import applicationbuilder "github.com/go-vertical-slice-template/internal/catalogs/shared/app/application_builder"
 
 func main() {
-	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
-	defer cancel()
-
 	builder := applicationbuilder.NewApplicationBuilder()
 
-	builder.AddLogger()
-	builder.AddEcho()
-	builder.AddGorm()
+	builder.AddCore()
+	builder.AddInfrastructure()
 	builder.AddRepositories()
-	builder.AddControllers()
+	builder.AddRoutes()
 
 	app := builder.Build()
 
@@ -36,5 +25,5 @@ func main() {
 
 	app.MapEndpoints()
 
-	app.Run(ctx)
+	app.Run()
 }
