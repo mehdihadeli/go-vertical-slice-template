@@ -1,16 +1,18 @@
 # Go Vertical Slice Template
+
 > A Go (Golang) Backend template based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [sarulabs/di](https://github.com/sarulabs/di) for Dependency Injection.
 
 **You can use this project as a template to build your Backend project in the Go language on top of this project.**
 
 ## Features
+
 - ✅ Using `Vertical Slice Architecture` as a high level architecture
 - ✅ Using `Data Centeric Architecture` based on CRUD
 - ✅ Using `CQRS Pattern` and `Mediator Pattern`on top of [mehdihadeli/Go-MediatR](https://github.com/mehdihadeli/Go-MediatR) library
 - ✅ Using `Dependency Injection` and `Inversion of Control`on top of [sarulabs/di](https://github.com/sarulabs/di) library
 - ✅ Using `RESTFul api` with [Echo](https://github.com/labstack/echo) framework and `Open-Api` using swagger with [swaggo/swag](https://github.com/swaggo/swag) library
 - ✅ Using [go-playground/validator](https://github.com/go-playground/validator) for validating input data in the REST and gRpc
-- ✅ Using `Gorm` and `SQLLite` for databases 
+- ✅ Using `Gorm` and `SQLLite` for databases
 - ✅ Using `Zap` for Logging
 - ✅ Using `Viper` for configuration management
 
@@ -21,7 +23,6 @@
 - ✔️ **[`emperror/errors`](https://github.com/emperror/errors)** - Drop-in replacement for the standard library errors package and github.com/pkg/errors
 - ✔️ **[`stretchr/testify`](https://github.com/stretchr/testify)** - A toolkit with common assertions and mocks that plays nicely with the standard library
 - ✔️ **[`mehdihadeli/go-mediatr`](https://github.com/mehdihadeli/go-mediatr)** - Mediator pattern implementation in Golang and helpful in creating CQRS based applications.
-- ✔️ **[`olivere/elastic/v7`](https://github.com/olivere/elastic/v7)** - Deprecated: Use the official Elasticsearch client for Go at
 - ✔️ **[`swaggo/swag`](https://github.com/swaggo/swag)** - Automatically generate RESTful API documentation with Swagger 2.0 for Go.
 - ✔️ **[`go-gorm/gorm`](https://github.com/go-gorm/gorm)** - The fantastic ORM library for Golang, aims to be developer friendly
 - ✔️ **[`go-playground/validator`](https://github.com/go-playground/validator)** - Go Struct and Field validation, including Cross Field, Cross Struct, Map, Slice and Array diving
@@ -34,11 +35,12 @@
 ## Project Layout and Structure
 
 projects structure is based on:
+
 - [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
 
 ## High Level Structure
 
-``` cmd
+```cmd
 │   .env
 │   .gitignore
 │   go.mod
@@ -149,7 +151,6 @@ projects structure is based on:
 
 ```
 
-
 ## Application Structure
 
 In this project I used [vertical slice architecture](https://jimmybogard.com/vertical-slice-architecture/) or [Restructuring to a Vertical Slice Architecture](https://codeopinion.com/restructuring-to-a-vertical-slice-architecture/) also I used [feature folder structure](http://www.kamilgrzybek.com/design/feature-folders/) in this project.
@@ -160,7 +161,6 @@ In this project I used [vertical slice architecture](https://jimmybogard.com/ver
 - With this approach, each of our vertical slices can decide for itself how to best fulfill the request. New features only add code, we're not changing shared code and worrying about side effects. For implementing vertical slice architecture using cqrs pattern is a good match.
 
 ![](./assets/vertical-slice-architecture.jpg)
-
 
 ![](./assets/vsa2.png)
 
