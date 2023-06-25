@@ -1,6 +1,6 @@
 # Go Vertical Slice Template
 
-> A Go (Golang) Backend template based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [sarulabs/di](https://github.com/sarulabs/di) for Dependency Injection.
+> A Golang boilerplate template, based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [sarulabs/di](https://github.com/sarulabs/di) for Dependency Injection.
 
 **You can use this project as a template to build your Backend project in the Go language on top of this project.**
 
@@ -37,6 +37,27 @@
 projects structure is based on:
 
 - [Standard Go Project Layout](https://github.com/golang-standards/project-layout)
+
+## How to run the project?
+
+We can run this Go boilerplate project with following steps:
+
+- Clone this project.
+- Move to your workspace: `cd your-workspace`.
+- Clone this project into your workspace: `git clone https://github.com/mehdihadeli/go-vertical-slice-template`.
+- Move to the project root directory: `cd go-vertical-slice-template`.
+- Create a file `.env` similar to existing `.env` file at the root directory for your environment variables.
+- Add application configurations based on enviroment (dev or production) in `config/config.development.json` or `config.production.json` files.
+- [Install `go`](https://go.dev/doc/install) if not installed on your machine.
+- Run `go run cmd/app/main.go`.
+- Access API using [http://localhost:9080](http://localhost:9080).
+
+## How to run the tests?
+
+```bash
+# Run all tests
+go test ./...
+```
 
 ## High Level Structure
 
