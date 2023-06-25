@@ -7,7 +7,7 @@
 ## Features
 
 - ✅ Using `Vertical Slice Architecture` as a high level architecture
-- ✅ Using `Data Centeric Architecture` based on CRUD
+- ✅ Using `Data Centric Architecture` based on CRUD
 - ✅ Using `CQRS Pattern` and `Mediator Pattern`on top of [mehdihadeli/Go-MediatR](https://github.com/mehdihadeli/Go-MediatR) library
 - ✅ Using `Dependency Injection` and `Inversion of Control`on top of [sarulabs/di](https://github.com/sarulabs/di) library
 - ✅ Using `RESTFul api` with [Echo](https://github.com/labstack/echo) framework and `Open-Api` using swagger with [swaggo/swag](https://github.com/swaggo/swag) library
