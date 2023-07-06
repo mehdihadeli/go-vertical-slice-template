@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 	"os/signal"
 	"syscall"
 	"time"
@@ -29,24 +30,25 @@ func NewApplication(container di.Container, echo *echo.Echo, logger *zap.Sugared
 
 func (a *Application) Run() {
 	//https://medium.com/@mokiat/proper-http-shutdown-in-go-bd3bfaade0f2
-	defaultDuration := time.Second * 10
+	defaultDuration := time.Second * 20
 
-	ctx, ctxCancel := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
-	defer ctxCancel()
+	// short context timeout just for starting `Start hooks` and setup dependencies
+	startCtx, cancel := context.WithTimeout(context.Background(), defaultDuration)
+	defer cancel()
+	a.Start(startCtx)
 
-	a.Start(ctx)
+	<-a.Wait()
 
-	<-ctx.Done()
-
+	// short context timeout just for doing `Stop hooks` and a graceful shutdown
 	// The context is used to inform the server it has 10 seconds to finish
-	// All Graceful shutdowns, should be in the `Stop` method  
-	stopCtx, stopCtxCancel := context.WithTimeout(context.Background(), defaultDuration)
-	defer stopCtxCancel()
+	// All Graceful shutdowns, should be in the `Stop` method
+	stopCtx, cancel := context.WithTimeout(context.Background(), defaultDuration)
+	defer cancel()
 	a.Stop(stopCtx)
 }
 
-func (a *Application) Start(ctx context.Context) {
-	echoStartHook(ctx, a)
+func (a *Application) Start(startCtx context.Context) {
+	echoStartHook(startCtx, a)
 }
 
 func (a *Application) Stop(shutdownCtx context.Context) {
@@ -56,6 +58,12 @@ func (a *Application) Stop(shutdownCtx context.Context) {
 	log.Println("Graceful shutdown complete.")
 }
 
+func (a *Application) Wait() <-chan os.Signal {
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+	return sigChan
+}
+
 // Hooks
 func echoStopHook(stopCtx context.Context, application *Application) {
 	if err := application.Echo.Shutdown(stopCtx); err != nil {
@@ -63,7 +71,7 @@ func echoStopHook(stopCtx context.Context, application *Application) {
 	}
 }
 
-func echoStartHook(ctx context.Context, application *Application) {
+func echoStartHook(startCtx context.Context, application *Application) {
 	go func() {
 		// When Shutdown is called, Serve, ListenAndServe, and ListenAndServeTLS immediately return ErrServerClosed. Make sure the program doesn't exit and waits instead for Shutdown to return.
 		if err := application.Echo.Start(application.Cfg.EchoHttpOptions.Port); !errors.Is(err, http.ErrServerClosed) {
