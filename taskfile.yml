@@ -1,0 +1,59 @@
+#https://taskfile.dev/#/installation
+#https://github.com/go-task/task/issues/1115
+version: '3'
+
+tasks:
+  install-tools:
+    desc: Install necessary tools
+    cmds:
+      - sh ./scripts/install-tools.sh
+
+  run-app:
+    desc: Run App
+    cmds:
+      - sh ./scripts/run.sh 
+
+  build:
+    desc: Build project components
+    cmds:
+      - sh ./scripts/build.sh 
+
+  install-dependencies:
+    desc: Install project dependencies
+    cmds:
+      - sh ./scripts/install-dependencies.sh 
+
+  openapi:
+    desc: Generate OpenAPI documentation
+    cmds:
+      - sh ./scripts/openapi.sh 
+
+  unit-test:
+    desc: Run unit tests
+    cmds:
+      - sh ./scripts/test.sh unit
+
+  integration-test:
+    desc: Run integration tests
+    cmds:
+      - sh ./scripts/test.sh integration
+
+  e2e-test:
+    desc: Run end-to-end tests
+    cmds:
+      - sh ./scripts/test.sh e2e
+
+  format:
+    desc: Format codebase
+    cmds:
+      - sh ./scripts/format.sh 
+
+  lint:
+    desc: Run linters
+    cmds:
+      - sh ./scripts/lint.sh 
+
+  mocks:
+    desc: Generate mocks
+    cmds:
+      - mockery --output mocks --all
