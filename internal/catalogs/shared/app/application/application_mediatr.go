@@ -13,31 +13,33 @@ import (
 )
 
 func (a *Application) ConfigMediator() error {
-	productRepository := a.Container.Get("productRepository").(contracts.ProductRepository)
+	return a.ResolveDependencyFunc(func(productRepository contracts.ProductRepository) error {
+		loggerPipeline := &behaviours.RequestLoggerBehaviour{}
+		err := mediatr.RegisterRequestPipelineBehaviors(loggerPipeline)
 
-	loggerPipeline := &behaviours.RequestLoggerBehaviour{}
-	err := mediatr.RegisterRequestPipelineBehaviors(loggerPipeline)
+		if err != nil {
+			return err
+		}
 
-	if err != nil {
-		return err
-	}
+		createProductCommandHandler := commands.NewCreateProductCommandHandler(productRepository)
+		err = mediatr.RegisterRequestHandler[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](createProductCommandHandler)
+		if err != nil {
+			return err
+		}
 
-	createProductCommandHandler := commands.NewCreateProductCommandHandler(productRepository)
-	err = mediatr.RegisterRequestHandler[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](createProductCommandHandler)
-	if err != nil {
-		return err
-	}
+		getByIdQueryHandler := queries.NewGetProductByIdHandler(productRepository)
+		err = mediatr.RegisterRequestHandler[*queries.GetProductByIdQuery, *dtos2.GetProductByIdQueryResponse](getByIdQueryHandler)
+		if err != nil {
+			return err
+		}
 
-	getByIdQueryHandler := queries.NewGetProductByIdHandler(productRepository)
-	err = mediatr.RegisterRequestHandler[*queries.GetProductByIdQuery, *dtos2.GetProductByIdQueryResponse](getByIdQueryHandler)
-	if err != nil {
-		return err
-	}
+		notificationHandler := events.NewProductCreatedEventHandler()
+		err = mediatr.RegisterNotificationHandler[*events.ProductCreatedEvent](notificationHandler)
+		if err != nil {
+			return err
+		}
 
-	notificationHandler := events.NewProductCreatedEventHandler()
-	err = mediatr.RegisterNotificationHandler[*events.ProductCreatedEvent](notificationHandler)
-	if err != nil {
-		return err
-	}
-	return nil
+		return nil
+	})
+
 }

@@ -25,5 +25,7 @@ func main() {
 
 	app.MapEndpoints()
 
+	app.ConfigSwagger()
+
 	app.Run()
 }

@@ -17,5 +17,5 @@ services:
       - go-vertical-slice-template
 
 networks:
-  food-delivery:
+  go-vertical-slice-template:
     name: go-vertical-slice-template
