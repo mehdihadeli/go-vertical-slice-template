@@ -1,0 +1,21 @@
+name: go-vertical-slice-template
+
+services:
+
+  postgres:
+    image: postgres:latest
+    pull_policy: if_not_present
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - ${POSTGRES_HOST_PORT:-5432}:${POSTGRES_PORT:-5432}
+    #https://docs.docker.com/compose/environment-variables/env-file/#parameter-expansion
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+    networks:
+      - go-vertical-slice-template
+
+networks:
+  go-vertical-slice-template:
+    name: go-vertical-slice-template

@@ -23,6 +23,16 @@ tasks:
     cmds:
       - sh ./scripts/install-dependencies.sh 
 
+  docker-compose-infra-up:
+    desc: Start infrastructure using docker-compose
+    cmds:
+      - docker-compose -f deployments/docker-compose/docker-compose.infrastructure.yaml up --build -d
+
+  docker-compose-infra-down:
+    desc: Stop infrastructure using docker-compose
+    cmds:
+      - docker-compose -f deployments/docker-compose/docker-compose.infrastructure.yaml down
+
   openapi:
     desc: Generate OpenAPI documentation
     cmds:
@@ -57,3 +67,8 @@ tasks:
     desc: Generate mocks
     cmds:
       - mockery --output mocks --all
+
+  update-dependencies:
+    desc: Update dependencies
+    cmds:
+      - sh ./scripts/update-dependencies.sh

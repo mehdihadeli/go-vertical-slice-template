@@ -1,31 +1,20 @@
 package database
 
 import (
-	"github.com/sarulabs/di"
+	"go.uber.org/dig"
+	"gorm.io/gorm"
 
-	"github.com/go-vertical-slice-template/internal/pkg/database/options"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 )
 
-func AddGorm(container *di.Builder) error {
-	gormOptionDep := di.Def{
-		Name:  "gormOptions",
-		Scope: di.App,
-		Build: func(ctn di.Container) (interface{}, error) {
-			return options.ProvideConfig()
-		},
-	}
+func AddGorm(container *dig.Container) error {
+	err := container.Provide(func() (*options.GormOptions, error) {
+		return options.ProvideConfig()
+	})
 
-	gormDep := di.Def{
-		Name:  "gorm",
-		Scope: di.App,
-		Build: func(ctn di.Container) (interface{}, error) {
-			opt := ctn.Get("gormOptions").(*options.GormOptions)
-			return NewGormDB(opt)
-		},
-	}
+	err = container.Provide(func(opts *options.GormOptions) (*gorm.DB, error) {
+		return NewGorm(opts)
+	})
 
-	err := container.Add(gormOptionDep)
-	err = container.Add(gormDep)
-	
 	return err
 }

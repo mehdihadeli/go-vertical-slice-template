@@ -6,10 +6,10 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/mehdihadeli/go-mediatr"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts/params"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/queries"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/queries"
 )
 
 type getProductByIdEndpoint struct {

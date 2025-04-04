@@ -1,6 +1,6 @@
 # Go Vertical Slice Template
 
-> A Golang boilerplate template, based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [sarulabs/di](https://github.com/sarulabs/di) for Dependency Injection.
+> A Golang boilerplate template, based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [uber-go/dig](https://github.com/uber-go/dig) for Dependency Injection.
 
 **You can use this project as a template to build your Backend project in the Go language on top of this project.**
 
@@ -9,7 +9,7 @@
 - ✅ Using `Vertical Slice Architecture` as a high level architecture
 - ✅ Using `Data Centric Architecture` based on CRUD
 - ✅ Using `CQRS Pattern` and `Mediator Pattern`on top of [mehdihadeli/Go-MediatR](https://github.com/mehdihadeli/Go-MediatR) library
-- ✅ Using `Dependency Injection` and `Inversion of Control`on top of [sarulabs/di](https://github.com/sarulabs/di) library
+- ✅ Using `Dependency Injection` and `Inversion of Control`on top of [uber-go/dig](https://github.com/uber-go/dig) library
 - ✅ Using `RESTFul api` with [Echo](https://github.com/labstack/echo) framework and `Open-Api` using swagger with [swaggo/swag](https://github.com/swaggo/swag) library
 - ✅ Using [go-playground/validator](https://github.com/go-playground/validator) for validating input data in the REST and gRpc
 - ✅ Using `Gorm` and `SQLLite` for databases
@@ -26,7 +26,7 @@
 - ✔️ **[`swaggo/swag`](https://github.com/swaggo/swag)** - Automatically generate RESTful API documentation with Swagger 2.0 for Go.
 - ✔️ **[`go-gorm/gorm`](https://github.com/go-gorm/gorm)** - The fantastic ORM library for Golang, aims to be developer friendly
 - ✔️ **[`go-playground/validator`](https://github.com/go-playground/validator)** - Go Struct and Field validation, including Cross Field, Cross Struct, Map, Slice and Array diving
-- ✔️ **[`sarulabs/di`](https://github.com/sarulabs/di)** - Dependency injection container in go (golang)
+- ✔️ **[`uber-go/dig`](https://github.com/uber-go/dig)** - A reflection based dependency injection toolkit for Go.
 - ✔️ **[`spf13/viper`](https://github.com/spf13/viper)** - Go configuration with fangs
 - ✔️ **[`caarlos0/env`](https://github.com/caarlos0/env)** - A simple and zero-dependencies library to parse environment variables into structs.
 - ✔️ **[`joho/godotenv`](https://github.com/joho/godotenv)** - A Go port of Ruby's dotenv library (Loads environment variables from .env files)
@@ -177,7 +177,7 @@ go test ./...
 In this project I used [vertical slice architecture](https://jimmybogard.com/vertical-slice-architecture/) or [Restructuring to a Vertical Slice Architecture](https://codeopinion.com/restructuring-to-a-vertical-slice-architecture/) also I used [feature folder structure](http://www.kamilgrzybek.com/design/feature-folders/) in this project.
 
 - We treat each request as a distinct use case or slice, encapsulating and grouping all concerns from front-end to back.
-- When We adding or changing a feature in an application in n-tire architecture, we are typically touching many different "layers" in an application. we are changing the user interface, adding fields to models, modifying validation, and so on. Instead of coupling across a layer, we couple vertically along a slice and each change affects only one slice.
+- When We are adding or changing a feature in an application in n-tire architecture, we are typically touching many different "layers" in an application. we are changing the user interface, adding fields to models, modifying validation, and so on. Instead of coupling across a layer, we couple vertically along a slice and each change affects only one slice.
 - We `Minimize coupling` `between slices`, and `maximize coupling` `in a slice`.
 - With this approach, each of our vertical slices can decide for itself how to best fulfill the request. New features only add code, we're not changing shared code and worrying about side effects. For implementing vertical slice architecture using cqrs pattern is a good match.
 
@@ -190,7 +190,7 @@ Also here I used [CQRS](https://www.eventecommerce.com/cqrs-pattern) for decompo
 - maximize performance, scalability and simplicity.
 - adding new feature to this mechanism is very easy without any breaking change in other part of our codes. New features only add code, we're not changing shared code and worrying about side effects.
 - easy to maintain and any changes only affect on one command or query (or a slice) and avoid any breaking changes on other parts
-- it gives us better separation of concerns and cross cutting concern (with help of MediatR behavior pipelines) in our code instead of a big service class for doing a lot of things.
+- it gives us better separation of concerns and cross-cutting concern (with help of MediatR behavior pipelines) in our code instead of a big service class for doing a lot of things.
 
 With using [CQRS](https://event-driven.io/en/cqrs_facts_and_myths_explained/), our code will be more aligned with [SOLID principles](https://en.wikipedia.org/wiki/SOLID), especially with:
 
@@ -207,7 +207,7 @@ Usually, when we work on a given functionality we need some technical things for
 - Some class to handle Request, For example Command and Command Handler or Query and Query Handler
 - Data Model
 
-Now we could all of these things beside each other and it decrease jumping and dependencies between some layers or folders.
+Now we could all of these things beside each other, and it decreases jumping and dependencies between some layers or folders.
 
 Keeping such a split works great with CQRS. It segregates our operations and slices the application code vertically instead of horizontally. In Our CQRS pattern each command/query handler is a separate slice. This is where you can reduce coupling between layers. Each handler can be a separated code unit, even copy/pasted. Thanks to that, we can tune down the specific method to not follow general conventions (e.g. use custom SQL query or even different storage). In a traditional layered architecture, when we change the core generic mechanism in one layer, it can impact all methods.
 

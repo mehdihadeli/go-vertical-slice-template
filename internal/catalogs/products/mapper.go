@@ -1,8 +1,8 @@
 package products
 
 import (
-	"github.com/go-vertical-slice-template/internal/catalogs/products/dtos"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/models"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 )
 
 func MapProductToProductDto(product *models.Product) *dtos.ProductDto {

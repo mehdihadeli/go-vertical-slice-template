@@ -1,23 +1,21 @@
 package applicationbuilder
 
 import (
+	"go.uber.org/dig"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/labstack/echo/v4"
-	"github.com/sarulabs/di"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"github.com/go-vertical-slice-template/config"
-	"github.com/go-vertical-slice-template/internal/catalogs/shared/app/application"
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 )
 
 type ApplicationBuilder struct {
-	Services    *di.Builder
+	Services    *dig.Container
 	Logger      *zap.SugaredLogger
 	Environment environemnt.Environment
 }
@@ -28,19 +26,18 @@ func NewApplicationBuilder(environments ...environemnt.Environment) *Application
 	log := createLogger()
 	setConfigPath()
 
-	builder, err := di.NewBuilder()
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	// Create the app container.
+	// Do not forget to delete it at the end.
+	// Create a Services with the default scopes (App, Request, SubRequest).
+	builder := dig.New()
 	return &ApplicationBuilder{Services: builder, Logger: log, Environment: env}
 }
 
 func (b *ApplicationBuilder) Build() *application.Application {
-	container := b.Services.Build()
+	container := b.Services
+	var app = application.NewApplication(container)
 
-	echo := container.Get("echo").(*echo.Echo)
-	cfg := container.Get("config").(*config.Config)
-	return application.NewApplication(container, echo, b.Logger, cfg)
+	return app
 }
 
 func createLogger() *zap.SugaredLogger {

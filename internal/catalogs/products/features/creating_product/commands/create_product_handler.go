@@ -5,10 +5,10 @@ import (
 
 	"github.com/mehdihadeli/go-mediatr"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/dtos"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/events"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/models"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/events"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 )
 
 type CreateProductCommandHandler struct {

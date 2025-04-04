@@ -2,6 +2,8 @@ package application
 
 import (
 	"context"
+	"fmt"
+	"go.uber.org/dig"
 	"log"
 	"net/http"
 	"os"
@@ -11,21 +13,34 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
-	"github.com/sarulabs/di"
 	"go.uber.org/zap"
 
-	"github.com/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/config"
 )
 
 type Application struct {
-	Container di.Container
+	Container *dig.Container
 	Echo      *echo.Echo
 	Logger    *zap.SugaredLogger
 	Cfg       *config.Config
 }
 
-func NewApplication(container di.Container, echo *echo.Echo, logger *zap.SugaredLogger, cfg *config.Config) *Application {
-	return &Application{Container: container, Echo: echo, Logger: logger, Cfg: cfg}
+func NewApplication(container *dig.Container) *Application {
+	app := &Application{}
+	err := container.Invoke(func(c *config.Config, e *echo.Echo, logger *zap.SugaredLogger) error {
+		app.Container = container
+		app.Echo = e
+		app.Logger = logger
+		app.Cfg = c
+
+		return nil
+	})
+
+	if err != nil {
+		app.Logger.Fatal(err)
+	}
+
+	return app
 }
 
 func (a *Application) Run() {
@@ -47,6 +62,17 @@ func (a *Application) Run() {
 	a.Stop(stopCtx)
 }
 
+func (a *Application) ResolveDependencyFunc(function interface{}) error {
+	return a.Container.Invoke(function)
+}
+
+func (a *Application) ResolveRequiredDependencyFunc(function interface{}) {
+	err := a.Container.Invoke(function)
+	if err != nil {
+		panic(fmt.Sprintf("failed to resolve dependency: %v", err))
+	}
+}
+
 func (a *Application) Start(startCtx context.Context) {
 	echoStartHook(startCtx, a)
 }
@@ -54,7 +80,6 @@ func (a *Application) Start(startCtx context.Context) {
 func (a *Application) Stop(shutdownCtx context.Context) {
 	echoStopHook(shutdownCtx, a)
 
-	a.Container.Delete()
 	log.Println("Graceful shutdown complete.")
 }
 
