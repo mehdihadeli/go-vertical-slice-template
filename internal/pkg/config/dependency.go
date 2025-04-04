@@ -3,7 +3,7 @@ package config
 import (
 	"github.com/sarulabs/di"
 
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 )
 
 func AddEnv(container *di.Builder) error {

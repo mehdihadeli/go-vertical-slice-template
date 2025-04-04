@@ -4,7 +4,7 @@ import (
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 
-	"github.com/go-vertical-slice-template/internal/pkg/database/options"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 )
 
 func NewGormDB(options *options.GormOptions) (*gorm.DB, error) {

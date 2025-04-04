@@ -3,8 +3,8 @@ package application
 import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 
-	"github.com/go-vertical-slice-template/docs"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/docs"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 )
 
 func (a *Application) MapEndpoints() {

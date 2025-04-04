@@ -8,14 +8,23 @@ set -e
 # https://github.com/incu6us/goimports-reviser
 go install -v github.com/incu6us/goimports-reviser/v3@latest
 
+# https://github.com/daixiang0/gci
+go install github.com/daixiang0/gci@latest
+
 # https://pkg.go.dev/golang.org/x/tools/cmd/goimports
 go install golang.org/x/tools/cmd/goimports@latest
+
 
 # https://github.com/mvdan/gofumpt
 go install mvdan.cc/gofumpt@latest
 
 # https://github.com/segmentio/golines
 go install github.com/segmentio/golines@latest
+
+# https://github.com/dominikh/go-tools
+go install honnef.co/go/tools/cmd/staticcheck@latest
+
+go install github.com/mgechev/revive@latest
 
 # https://golangci-lint.run/usage/install/#install-from-source
 go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
@@ -42,44 +51,4 @@ npm install -g @openapitools/openapi-generator-cli
 # https://vektra.github.io/mockery/latest/installation/
 go install github.com/vektra/mockery/v2@latest
 
-OS="$(uname -s)"
-
-if [[ "$OS" == "Linux" ]]; then
-    # https://github.com/bufbuild/buf
-    echo "Installing Buff on Linux..."
-    # Linux installation commands
-    curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Linux-x86_64 \
-        -o /usr/local/bin/buf
-    chmod +x /usr/local/bin/buf
-    echo "Buff installed successfully."
-
-    # https://k6.io/docs/get-started/installation/
-    echo "Installing k6 on Linux..."
-    sudo gpg -k
-    sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D69
-    echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
-    sudo apt-get update
-    sudo apt-get install k6
-
-    # https://grpc.io/docs/protoc-installation/
-    apt install -y protobuf-compiler
-elif [[ "$OS" == "MINGW"* || "$OS" == "MSYS"* ]]; then
-    # https://github.com/bufbuild/buf
-    echo "Installing Buff on Windows..."
-    # Windows installation commands
-    curl -sSL https://github.com/bufbuild/buf/releases/latest/download/buf-Windows-x86_64.exe \
-        -o buf.exe
-    Move-Item -Force buf.exe $Env:ProgramFiles\buf.exe
-    echo "Buff installed successfully."
-
-     # https://k6.io/docs/get-started/installation/
-     echo "Installing k6 on Windows..."
-     winget install k6
-
-     # https://community.chocolatey.org/packages/protoc
-     # https://grpc.io/docs/protoc-installation/
-     choco install protoc
-else
-    echo "Unsupported operating system: $OS"
-    exit 1
-fi
+go install github.com/onsi/ginkgo/v2/ginkgo@latest

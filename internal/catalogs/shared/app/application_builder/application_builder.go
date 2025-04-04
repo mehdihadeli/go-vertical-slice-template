@@ -10,10 +10,10 @@ import (
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 
-	"github.com/go-vertical-slice-template/config"
-	"github.com/go-vertical-slice-template/internal/catalogs/shared/app/application"
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 )
 
 type ApplicationBuilder struct {

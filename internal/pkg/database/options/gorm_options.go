@@ -3,7 +3,7 @@ package options
 import (
 	"fmt"
 
-	"github.com/go-vertical-slice-template/internal/pkg/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 )
 
 type GormOptions struct {

@@ -8,7 +8,7 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 
-	"github.com/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 )
 
 type Environment string

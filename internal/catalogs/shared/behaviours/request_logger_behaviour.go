@@ -12,7 +12,7 @@ type RequestLoggerBehaviour struct {
 func (r *RequestLoggerBehaviour) Handle(ctx context.Context, request interface{}, next mediatr.RequestHandlerFunc) (interface{}, error) {
 	log.Printf("logging some stuff before handling the request")
 
-	response, err := next()
+	response, err := next(ctx)
 	if err != nil {
 		return nil, err
 	}

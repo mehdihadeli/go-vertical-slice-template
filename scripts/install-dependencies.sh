@@ -4,7 +4,8 @@
 set -e
 
 # https://www.reddit.com/r/golang/comments/x722i0/go_install_vs_go_mod_tidy_vs_go_get/
-go mod download && go mod tidy
+# will do `go mod download` implicitly - Adds missing dependencies - Removes unused dependencies - Update go.mod and go.sum files
+go mod tidy
 
 
 

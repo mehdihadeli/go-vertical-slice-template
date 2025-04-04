@@ -10,9 +10,9 @@ import (
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
 
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/go-vertical-slice-template/internal/pkg/constants"
-	typeMapper "github.com/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
 )
 
 func BindConfig[T any](environments ...environemnt.Environment) (T, error) {

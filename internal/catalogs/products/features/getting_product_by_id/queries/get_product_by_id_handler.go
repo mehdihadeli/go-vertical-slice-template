@@ -6,9 +6,9 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
 )
 
 type GetProductByIdQueryHandler struct {

@@ -8,8 +8,8 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/models"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 )
 
 type InMemoryProductRepository struct {

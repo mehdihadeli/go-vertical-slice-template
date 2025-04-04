@@ -14,7 +14,7 @@ import (
 	"github.com/sarulabs/di"
 	"go.uber.org/zap"
 
-	"github.com/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/config"
 )
 
 type Application struct {

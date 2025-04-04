@@ -1,6 +1,6 @@
 package main
 
-import applicationbuilder "github.com/go-vertical-slice-template/internal/catalogs/shared/app/application_builder"
+import applicationbuilder "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application_builder"
 
 func main() {
 	builder := applicationbuilder.NewApplicationBuilder()

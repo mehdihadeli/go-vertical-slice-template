@@ -5,8 +5,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/go-vertical-slice-template/internal/pkg/config"
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 )
 
 type Config struct {

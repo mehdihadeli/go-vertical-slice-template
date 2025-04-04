@@ -3,7 +3,7 @@ package database
 import (
 	"github.com/sarulabs/di"
 
-	"github.com/go-vertical-slice-template/internal/pkg/database/options"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 )
 
 func AddGorm(container *di.Builder) error {
@@ -26,6 +26,6 @@ func AddGorm(container *di.Builder) error {
 
 	err := container.Add(gormOptionDep)
 	err = container.Add(gormDep)
-	
+
 	return err
 }

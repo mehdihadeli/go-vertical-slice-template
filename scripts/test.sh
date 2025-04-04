@@ -7,7 +7,7 @@
 # In a bash script, set -e is a command that enables the "exit immediately" option. When this option is set, the script will terminate immediately if any command within the script exits with a non-zero status (indicating an error).
 set -e
 
-readonly type="$2"
+readonly type="$1"
 
- go test -tags="$type" -count=1 -p=1 -parallel=1 ./...
+ go test -tags="$type" -timeout=30m  -count=1 -p=1 -parallel=1 ./...
 

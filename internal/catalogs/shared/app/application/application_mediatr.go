@@ -3,13 +3,13 @@ package application
 import (
 	"github.com/mehdihadeli/go-mediatr"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/commands"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/dtos"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/events"
-	dtos2 "github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/queries"
-	"github.com/go-vertical-slice-template/internal/catalogs/shared/behaviours"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/commands"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/events"
+	dtos2 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/queries"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/behaviours"
 )
 
 func (a *Application) ConfigMediator() error {

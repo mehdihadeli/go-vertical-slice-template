@@ -7,15 +7,15 @@ import (
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 
-	"github.com/go-vertical-slice-template/config"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/contracts/params"
-	endpoints2 "github.com/go-vertical-slice-template/internal/catalogs/products/features/creating_product/endpoints"
-	endpoints3 "github.com/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/endpoints"
-	"github.com/go-vertical-slice-template/internal/catalogs/products/repository"
-	config2 "github.com/go-vertical-slice-template/internal/pkg/config"
-	"github.com/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/go-vertical-slice-template/internal/pkg/database"
+	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
+	endpoints2 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creating_product/endpoints"
+	endpoints3 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/getting_product_by_id/endpoints"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/repository"
+	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database"
 )
 
 func (b *ApplicationBuilder) AddCore() {

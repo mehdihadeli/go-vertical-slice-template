@@ -6,7 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 
-	"github.com/go-vertical-slice-template/internal/catalogs/products/models"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 )
 
 func (a *Application) MigrateDatabase() error {
