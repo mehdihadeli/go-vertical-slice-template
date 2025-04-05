@@ -3,6 +3,7 @@ package application
 import (
 	"context"
 	"fmt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	"go.uber.org/dig"
 	"log"
 	"net/http"
@@ -12,22 +13,20 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
-	"github.com/pkg/errors"
-	"go.uber.org/zap"
-
 	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/pkg/errors"
 )
 
 type Application struct {
 	Container *dig.Container
 	Echo      *echo.Echo
-	Logger    *zap.SugaredLogger
+	Logger    logger.Logger
 	Cfg       *config.Config
 }
 
 func NewApplication(container *dig.Container) *Application {
 	app := &Application{}
-	err := container.Invoke(func(c *config.Config, e *echo.Echo, logger *zap.SugaredLogger) error {
+	err := container.Invoke(func(c *config.Config, e *echo.Echo, logger logger.Logger) error {
 		app.Container = container
 		app.Echo = e
 		app.Logger = logger

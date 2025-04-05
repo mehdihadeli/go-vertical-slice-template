@@ -5,7 +5,6 @@ import applicationbuilder "github.com/mehdihadeli/go-vertical-slice-template/int
 func main() {
 	builder := applicationbuilder.NewApplicationBuilder()
 
-	builder.AddCore()
 	builder.AddInfrastructure()
 	builder.AddRepositories()
 	builder.AddRoutes()

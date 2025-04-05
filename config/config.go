@@ -14,7 +14,7 @@ type Config struct {
 	EchoHttpOptions EchoHttpOptions `mapstructure:"echoHttpOptions"`
 }
 
-func NewConfig(env environemnt.Environment) (*Config, error) {
+func NewAppConfig(env environemnt.Environment) (*Config, error) {
 	cfg, err := config.BindConfig[*Config](env)
 	if err != nil {
 		return nil, err

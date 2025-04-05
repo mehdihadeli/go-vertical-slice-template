@@ -3,11 +3,11 @@ package params
 import (
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
-	"go.uber.org/zap"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 )
 
 type ProductRouteParams struct {
-	Logger        *zap.SugaredLogger
+	Logger        logger.Logger
 	ProductsGroup *echo.Group
 	Validator     *validator.Validate
 }

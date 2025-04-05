@@ -19,7 +19,7 @@ var (
 	Production  = Environment(constants.Production)
 )
 
-func ConfigAppEnv(environments ...Environment) Environment {
+func ConfigEnv(environments ...Environment) Environment {
 	environment := Environment("")
 	if len(environments) > 0 {
 		environment = environments[0]

@@ -2,8 +2,8 @@ package repository
 
 import (
 	"context"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 
 	uuid "github.com/satori/go.uuid"
@@ -14,10 +14,10 @@ import (
 
 type InMemoryProductRepository struct {
 	db     *gorm.DB
-	logger *zap.SugaredLogger
+	logger logger.Logger
 }
 
-func NewInMemoryProductRepository(db *gorm.DB, logger *zap.SugaredLogger) contracts.ProductRepository {
+func NewInMemoryProductRepository(db *gorm.DB, logger logger.Logger) contracts.ProductRepository {
 	return &InMemoryProductRepository{db: db, logger: logger}
 }
 

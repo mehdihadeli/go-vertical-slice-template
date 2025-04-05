@@ -1,52 +1,66 @@
 package applicationbuilder
 
 import (
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	"go.uber.org/dig"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/spf13/viper"
-	"go.uber.org/zap"
-
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/spf13/viper"
 )
 
 type ApplicationBuilder struct {
-	Services    *dig.Container
-	Logger      *zap.SugaredLogger
+	Container   *dig.Container
+	Logger      logger.Logger
 	Environment environemnt.Environment
 }
 
 func NewApplicationBuilder(environments ...environemnt.Environment) *ApplicationBuilder {
-	env := environemnt.ConfigAppEnv(environments...)
-
-	log := createLogger()
-	setConfigPath()
-
 	// Create the app container.
 	// Do not forget to delete it at the end.
-	// Create a Services with the default scopes (App, Request, SubRequest).
-	builder := dig.New()
-	return &ApplicationBuilder{Services: builder, Logger: log, Environment: env}
+	// Create a Container with the default scopes (App, Request, SubRequest).
+	container := dig.New()
+
+	err := logger.AddLogger(container)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	setConfigPath()
+	err = config.AddEnv(container, environments...)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	var l logger.Logger
+	var env environemnt.Environment
+
+	err = container.Invoke(func(logger logger.Logger, environment environemnt.Environment) error {
+		env = environment
+		l = logger
+
+		return nil
+	})
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	appBuilder := &ApplicationBuilder{Container: container, Logger: l, Environment: env}
+
+	return appBuilder
 }
 
 func (b *ApplicationBuilder) Build() *application.Application {
-	container := b.Services
+	container := b.Container
 	var app = application.NewApplication(container)
 
 	return app
-}
-
-func createLogger() *zap.SugaredLogger {
-	// https://github.com/uber-go/zap#quick-start
-	logger, _ := zap.NewProduction()
-	defer logger.Sync() // flushes buffer, if any
-	log := logger.Sugar()
-
-	return log
 }
 
 func setConfigPath() {
