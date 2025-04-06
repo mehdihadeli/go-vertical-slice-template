@@ -2,7 +2,6 @@ package environemnt
 
 import (
 	"log"
-	"os"
 	"syscall"
 
 	"github.com/joho/godotenv"
@@ -37,7 +36,7 @@ func ConfigEnv(environments ...Environment) Environment {
 		log.Println(".env file cannot be found.")
 	}
 
-	manualEnv := os.Getenv(constants.AppEnv)
+	manualEnv := viper.Get(constants.AppEnv).(string)
 
 	if manualEnv != "" {
 		environment = Environment(manualEnv)

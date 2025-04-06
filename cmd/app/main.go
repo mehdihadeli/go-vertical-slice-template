@@ -1,30 +1,31 @@
 package main
 
-import applicationbuilder "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application_builder"
+import (
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app"
+	"github.com/spf13/cobra"
+	"os"
+)
 
+var rootCmd = &cobra.Command{
+	Use:              "catalogs-api",
+	Short:            "catalogs-api based on vertical slice architecture",
+	Long:             `This is a command runner or cli for api architecture in golang.`,
+	TraverseChildren: true,
+	Run: func(cmd *cobra.Command, args []string) {
+		app.NewApp().Run()
+	},
+}
+
+// https://github.com/swaggo/swag#how-to-use-it-with-gin
+
+// @contact.name Mehdi Hadeli
+// @contact.url https://github.com/mehdihadeli
+// @title Catalogs Api
+// @version 1.0
+// @description Catalogs Api.
 func main() {
-	builder := applicationbuilder.NewApplicationBuilder()
-
-	builder.AddInfrastructure()
-	builder.AddRepositories()
-	builder.AddRoutes()
-
-	app := builder.Build()
-
-	// configure services
-	err := app.MigrateDatabase()
+	err := rootCmd.Execute()
 	if err != nil {
-		app.Logger.Fatal("Error in migrating database", err)
+		os.Exit(1)
 	}
-
-	err = app.ConfigMediator()
-	if err != nil {
-		app.Logger.Fatal("Error in setting mediator handlers", err)
-	}
-
-	app.MapEndpoints()
-
-	app.ConfigSwagger()
-
-	app.Run()
 }
