@@ -1,0 +1,29 @@
+{
+  "appOptions": {
+    "name": "go-vertical-slice-template"
+  },
+  "logOptions": {
+    "level": "debug",
+    "logType": 0,
+    "callerEnabled": false
+  },
+  "echoHttpOptions": {
+    "name": "catalogs",
+    "port": ":6001",
+    "development": true,
+    "timeout": 30,
+    "basePath": "",
+    "host": "http://localhost",
+    "debugHeaders": true,
+    "httpClientDebug": true,
+    "debugErrorsResponse": true
+  },
+  "gormOptions": {
+    "host": "localhost",
+    "port": 5432,
+    "user": "postgres",
+    "password": "postgres",
+    "dbName": "catalogs_test",
+    "sslMode": false
+  }
+}

@@ -1,9 +1,9 @@
 package config
 
 import (
-	"go.uber.org/dig"
-
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+
+	"go.uber.org/dig"
 )
 
 func AddEnv(container *dig.Container, environments ...environemnt.Environment) error {

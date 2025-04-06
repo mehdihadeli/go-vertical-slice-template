@@ -5,14 +5,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
+
 	"emperror.dev/errors"
 	"github.com/caarlos0/env/v8"
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
-	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
 )
 
 func BindConfig[T any](environments ...environemnt.Environment) (T, error) {
@@ -44,7 +44,7 @@ func BindConfigKey[T any](configKey string, environments ...environemnt.Environm
 		configPath = d
 	}
 
-	cfg := typeMapper.GenericInstanceByT[T]()
+	cfg := typemapper.GenericInstanceByT[T]()
 
 	// https://github.com/spf13/viper/issues/390#issuecomment-718756752
 	viper.SetConfigName(fmt.Sprintf("config.%s", environment))

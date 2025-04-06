@@ -2,6 +2,7 @@ package logger
 
 import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+
 	"go.uber.org/dig"
 )
 
@@ -19,6 +20,6 @@ func AddLogger(container *dig.Container) error {
 	if err != nil {
 		return err
 	}
-	
+
 	return err
 }

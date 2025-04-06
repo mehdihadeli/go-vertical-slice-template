@@ -2,13 +2,12 @@ package environemnt
 
 import (
 	"log"
-	"os"
 	"syscall"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 )
 
 type Environment string
@@ -37,7 +36,7 @@ func ConfigEnv(environments ...Environment) Environment {
 		log.Println(".env file cannot be found.")
 	}
 
-	manualEnv := os.Getenv(constants.AppEnv)
+	manualEnv := viper.Get(constants.AppEnv).(string)
 
 	if manualEnv != "" {
 		environment = Environment(manualEnv)

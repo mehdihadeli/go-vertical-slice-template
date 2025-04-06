@@ -13,16 +13,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # https://github.com/actions/setup-go/issues/326
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v5
         with:
-          go-version: 1.20.x
+          go-version: 1.24
 
       - name: Build
         run: go build -v ./...
 
-      - name: Test
-        run: go test -v ./...
+      - name: Run Unit Tests
+        run: go test -tags="unit" -timeout=30m  -count=1 -p=1 -parallel=1 ./...
+
+      - name: Run Integration Tests
+        run: go test -tags="integration" -timeout=30m  -count=1 -p=1 -parallel=1 ./...
+
+      - name: Run Integration Tests
+        run: go test -tags="e2e" -timeout=30m  -count=1 -p=1 -parallel=1 ./...

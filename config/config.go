@@ -10,7 +10,7 @@ import (
 )
 
 type Config struct {
-	AppOptions      AppOptions      `mapstructure:"appOptions"           env:"AppOptions"`
+	AppOptions      AppOptions      `mapstructure:"appOptions"      env:"AppOptions"`
 	EchoHttpOptions EchoHttpOptions `mapstructure:"echoHttpOptions"`
 }
 
@@ -24,7 +24,7 @@ func NewAppConfig(env environemnt.Environment) (*Config, error) {
 }
 
 type AppOptions struct {
-	Name string `mapstructure:"name"  env:"Name"`
+	Name string `mapstructure:"name" env:"Name"`
 }
 
 func (cfg *AppOptions) GetMicroserviceNameUpper() string {

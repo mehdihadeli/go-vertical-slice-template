@@ -2,6 +2,7 @@ package config
 
 import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+
 	"go.uber.org/dig"
 )
 

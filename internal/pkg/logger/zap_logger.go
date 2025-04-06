@@ -1,10 +1,11 @@
 package logger
 
 import (
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 	"os"
 	"time"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
