@@ -4,10 +4,10 @@ import (
 	"github.com/iancoleman/strcase"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 )
 
-var optionName = strcase.ToLowerCamel(typeMapper.GetGenericTypeNameByT[LogOptions]())
+var optionName = strcase.ToLowerCamel(typemapper.GetGenericTypeNameByT[LogOptions]())
 
 type LogOptions struct {
 	LogLevel      string `mapstructure:"level"`

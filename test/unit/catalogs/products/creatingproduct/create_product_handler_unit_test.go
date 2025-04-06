@@ -5,6 +5,11 @@ package creatingproduct
 
 import (
 	"fmt"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+	"net/http"
+	"testing"
+	"time"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/mehdihadeli/go-mediatr"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/commands"
@@ -12,8 +17,6 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/unittest"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type createProductHandlerUnitTests struct {
@@ -79,17 +82,17 @@ func (c *createProductHandlerUnitTests) Test_Handle_Should_Return_Error_When_Rep
 	}
 
 	product := commands.MapCreateProductToProduct(createProduct)
-	mockError := fmt.Errorf("repository error")
 
 	c.ProductRepository.On("CreateProduct", c.Ctx, product).
-		Return(nil, mockError).
+		Return(nil, customErrors.NewNotFoundError(fmt.Sprintf("product with id %s not found", createProduct.ProductID))).
 		Once()
 
 	res, err := c.handler.Handle(c.Ctx, createProduct)
 
 	c.Require().Error(err)
+	c.Require().ErrorContains(err, fmt.Sprintf("product with id %s not found", createProduct.ProductID))
+	c.True(customErrors.IsApplicationError(err, http.StatusInternalServerError))
 	c.Require().Nil(res)
-	c.Equal(mockError, err)
 	c.ProductRepository.AssertCalled(c.T(), "CreateProduct", c.Ctx, product)
 	c.ProductRepository.AssertNumberOfCalls(c.T(), "CreateProduct", 1)
 }
@@ -98,6 +101,7 @@ func (c *createProductHandlerUnitTests) Test_Handle_Should_Return_Error_When_Com
 	res, err := c.handler.Handle(c.Ctx, nil)
 
 	c.Require().Error(err)
+	c.Require().ErrorContains(err, "command cannot be nil")
+	c.True(customErrors.IsApplicationError(err, http.StatusBadRequest))
 	c.Require().Nil(res)
-	c.Equal("command cannot be nil", err.Error())
 }

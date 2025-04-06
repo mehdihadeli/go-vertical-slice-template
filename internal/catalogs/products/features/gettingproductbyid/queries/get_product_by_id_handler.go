@@ -22,7 +22,7 @@ func NewGetProductByIdHandler(productRepository contracts.ProductRepository) *Ge
 
 func (q *GetProductByIdQueryHandler) Handle(ctx context.Context, query *GetProductByIdQuery) (*dtos.GetProductByIdQueryResponse, error) {
 	if query == nil {
-		return nil, customErrors.NewApplicationErrorWithCode("command cannot be nil", http.StatusBadRequest)
+		return nil, customErrors.NewApplicationErrorWithCode("query cannot be nil", http.StatusBadRequest)
 	}
 
 	if query.ProductID == uuid.Nil {

@@ -124,7 +124,7 @@ func Test_Application_Err(t *testing.T) {
 }
 
 func Test_Api_Err(t *testing.T) {
-	rootErr2 := NewApiErrorWrap(
+	rootErr2 := NewApiErrorWrapWithCode(
 		nil,
 		http.StatusBadRequest,
 		fmt.Sprintf("domain_events event already exists in event registry"),
@@ -132,7 +132,7 @@ func Test_Api_Err(t *testing.T) {
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
 	rootErr := errors.NewPlain("handling api_exceptions errorUtils")
-	appErr := NewApiErrorWrap(
+	appErr := NewApiErrorWrapWithCode(
 		rootErr,
 		400,
 		"this is a api_exceptions errorUtils",

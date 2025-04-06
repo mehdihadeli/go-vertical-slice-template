@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
-	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
+	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 	"net/http"
 	"reflect"
 	"time"

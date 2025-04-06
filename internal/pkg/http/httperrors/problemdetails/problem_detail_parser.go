@@ -3,11 +3,12 @@ package problemDetails
 import (
 	"context"
 	"database/sql"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
-	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/type_mappper"
-	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 	"net/http"
 	"reflect"
+
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
+	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 
 	"emperror.dev/errors"
 	"github.com/go-playground/validator"

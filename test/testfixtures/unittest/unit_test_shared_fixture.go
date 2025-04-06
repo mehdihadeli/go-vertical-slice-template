@@ -31,9 +31,8 @@ func NewUnitTestSharedFixture(t *testing.T) *UnitTestSharedFixture {
 	cfg := &config.AppOptions{Name: "TestApp"}
 
 	unit := &UnitTestSharedFixture{
-		Cfg:               cfg,
-		Log:               log,
-		ProductRepository: mocks.NewProductRepository(t),
+		Cfg: cfg,
+		Log: log,
 	}
 
 	return unit
@@ -47,8 +46,13 @@ func (c *UnitTestSharedFixture) TearDownSuite() {
 }
 
 func (c *UnitTestSharedFixture) SetupTest() {
-	ctx := context.Background()
-	c.Ctx = ctx
+	c.Ctx = context.Background()
+
+	// Initialize any other fresh test data
+	c.Products = []*models.Product{}
+
+	// rest mock for each test run for preventing incorrect mock data between tests
+	c.ProductRepository = mocks.NewProductRepository(c.T())
 }
 
 func (c *UnitTestSharedFixture) TearDownTest() {

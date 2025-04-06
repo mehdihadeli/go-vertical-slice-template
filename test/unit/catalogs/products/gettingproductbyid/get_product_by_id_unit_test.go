@@ -1,8 +1,15 @@
-package getting_product_by_id
+//go:build unit
+// +build unit
+
+package gettingproductbyid
 
 import (
-	"emperror.dev/errors"
 	"fmt"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+	"net/http"
+	"testing"
+	"time"
+
 	"github.com/brianvoe/gofakeit/v6"
 	"github.com/mehdihadeli/go-mediatr"
 	dtos2 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/dtos"
@@ -12,8 +19,6 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/unittest"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
-	"testing"
-	"time"
 )
 
 type getProductByIdHandlerUnitTests struct {
@@ -72,10 +77,9 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Product_When_
 func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Product_Not_Found() {
 	// Arrange
 	productID := uuid.NewV4()
-	expectedError := errors.New("product not found")
 
 	g.ProductRepository.On("GetProductById", g.Ctx, productID).
-		Return(nil, expectedError).
+		Return(nil, customErrors.NewNotFoundError(fmt.Sprintf("product with id %s not found", productID))).
 		Once()
 
 	query := &queries.GetProductByIdQuery{ProductID: productID}
@@ -85,6 +89,8 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Pr
 
 	// Assert
 	g.Require().Error(err)
+	g.Require().ErrorContains(err, fmt.Sprintf("product with id %s not found", query.ProductID))
+	g.True(customErrors.IsApplicationError(err, http.StatusNotFound))
 	g.Require().Nil(response)
 	g.Contains(err.Error(), fmt.Sprintf("product with id %s not found", productID))
 	g.ProductRepository.AssertCalled(g.T(), "GetProductById", g.Ctx, productID)
@@ -97,8 +103,9 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Qu
 
 	// Assert
 	g.Require().Error(err)
+	g.Require().ErrorContains(err, "query cannot be nil")
+	g.True(customErrors.IsApplicationError(err, http.StatusBadRequest))
 	g.Require().Nil(response)
-	g.Equal("query cannot be nil", err.Error())
 }
 
 func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_ProductID_Is_Zero() {
@@ -110,8 +117,9 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Pr
 
 	// Assert
 	g.Require().Error(err)
+	g.Require().ErrorContains(err, "product id cannot be empty")
+	g.True(customErrors.IsApplicationError(err, http.StatusBadRequest))
 	g.Require().Nil(response)
-	g.Contains(err.Error(), "product id cannot be empty")
 }
 
 func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Repository_Returns_Nil_Product_Without_Error() {
@@ -119,7 +127,7 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Re
 	productID := uuid.NewV4()
 
 	g.ProductRepository.On("GetProductById", g.Ctx, productID).
-		Return(nil, errors.New("product not found")).
+		Return(nil, customErrors.NewNotFoundError(fmt.Sprintf("product with id %s not found", productID))).
 		Once()
 
 	query := queries.NewGetProductByIdQuery(productID)
@@ -129,6 +137,7 @@ func (g *getProductByIdHandlerUnitTests) Test_Handle_Should_Return_Error_When_Re
 
 	// Assert
 	g.Require().NotNil(err)
+	g.Require().ErrorContains(err, fmt.Sprintf("product with id %s not found", productID))
 	g.Require().Nil(response)
-	g.Contains(err.Error(), fmt.Sprintf("product with id %s not found", productID))
+	g.True(customErrors.IsApplicationError(err, http.StatusNotFound))
 }
