@@ -1,17 +1,15 @@
 package database
 
 import (
-	"github.com/glebarez/sqlite"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
-	"gorm.io/gorm"
-)
-
-import (
 	"database/sql"
 	"fmt"
 
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
+
 	"emperror.dev/errors"
+	"github.com/glebarez/sqlite"
 	gormPostgres "gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func NewGorm(cfg *options.GormOptions) (*gorm.DB, error) {
@@ -104,7 +102,6 @@ func createPostgresDB(cfg *options.GormOptions) error {
 	}
 
 	db, err = postgresGormDB.DB()
-
 	if err != nil {
 		return err
 	}

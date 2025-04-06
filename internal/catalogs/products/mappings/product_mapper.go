@@ -18,7 +18,13 @@ func MapProductToProductDto(product *models.Product) *dtos.ProductDto {
 }
 
 func MapProductToCreatedProduct(createdProduct *models.Product) *events.ProductCreatedEvent {
-	productCreatedEvent := events.NewProductCreatedEvent(createdProduct.ProductID, createdProduct.Name, createdProduct.Description, createdProduct.Price, createdProduct.CreatedAt)
+	productCreatedEvent := events.NewProductCreatedEvent(
+		createdProduct.ProductID,
+		createdProduct.Name,
+		createdProduct.Description,
+		createdProduct.Price,
+		createdProduct.CreatedAt,
+	)
 
 	return productCreatedEvent
 }

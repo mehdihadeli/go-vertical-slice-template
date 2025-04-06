@@ -2,8 +2,9 @@ package customErrors
 
 import (
 	"fmt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 	"io"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 
 	"emperror.dev/errors"
 )

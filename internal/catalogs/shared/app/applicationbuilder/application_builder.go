@@ -1,18 +1,19 @@
 package applicationbuilder
 
 import (
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
-	"go.uber.org/dig"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+
 	"github.com/spf13/viper"
+	"go.uber.org/dig"
 )
 
 type ApplicationBuilder struct {
@@ -72,7 +73,7 @@ func (b *ApplicationBuilder) Build() *application.Application {
 	}
 
 	container := b.Container
-	var app = application.NewApplication(container)
+	app := application.NewApplication(container)
 
 	return app
 }

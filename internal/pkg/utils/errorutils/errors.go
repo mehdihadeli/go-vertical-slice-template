@@ -2,10 +2,11 @@ package errorUtils
 
 import (
 	"fmt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
-	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
 	"runtime/debug"
 	"strings"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
+	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
 
 	"emperror.dev/errors"
 )

@@ -2,6 +2,9 @@ package integration
 
 import (
 	"context"
+	"testing"
+	"time"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
@@ -9,14 +12,12 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	gotmtestcontainer "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/containers/testcontainer/gorm"
-	"github.com/stretchr/testify/suite"
-	"go.uber.org/dig"
-	"testing"
-	"time"
 
 	"emperror.dev/errors"
 	"github.com/brianvoe/gofakeit/v6"
 	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/suite"
+	"go.uber.org/dig"
 	"gorm.io/gorm"
 
 	_ "github.com/lib/pq"
@@ -46,14 +47,16 @@ func NewIntegrationTestSharedFixture(
 
 	integrationFixture := &IntegrationTestSharedFixture{}
 
-	err := container.Invoke(func(l logger.Logger, db *gorm.DB, cfg *config.Config, productRepository contracts.ProductRepository) {
-		integrationFixture.Log = l
-		integrationFixture.Container = container
-		integrationFixture.Gorm = db
-		integrationFixture.Cfg = cfg
-		integrationFixture.BaseAddress = cfg.EchoHttpOptions.BasePathAddress()
-		integrationFixture.ProductRepository = productRepository
-	})
+	err := container.Invoke(
+		func(l logger.Logger, db *gorm.DB, cfg *config.Config, productRepository contracts.ProductRepository) {
+			integrationFixture.Log = l
+			integrationFixture.Container = container
+			integrationFixture.Gorm = db
+			integrationFixture.Cfg = cfg
+			integrationFixture.BaseAddress = cfg.EchoHttpOptions.BasePathAddress()
+			integrationFixture.ProductRepository = productRepository
+		},
+	)
 	if err != nil {
 		t.Fatal(err)
 	}

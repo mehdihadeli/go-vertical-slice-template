@@ -5,13 +5,15 @@ package creatingproduct
 
 import (
 	"context"
-	"github.com/brianvoe/gofakeit/v6"
-	"github.com/gavv/httpexpect/v2"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
-	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
-	"github.com/stretchr/testify/suite"
 	"net/http"
 	"testing"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
+	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/gavv/httpexpect/v2"
+	"github.com/stretchr/testify/suite"
 )
 
 type createProductE2ETest struct {

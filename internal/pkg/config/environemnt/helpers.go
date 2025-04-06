@@ -1,11 +1,12 @@
 package environemnt
 
 import (
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 
 	"emperror.dev/errors"
 	"github.com/spf13/viper"

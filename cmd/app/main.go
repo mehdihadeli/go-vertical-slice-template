@@ -1,9 +1,11 @@
 package main
 
 import (
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app"
-	"github.com/spf13/cobra"
 	"os"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app"
+
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{

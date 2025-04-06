@@ -1,8 +1,9 @@
 package commands
 
 import (
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 	"time"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 
 	uuid "github.com/satori/go.uuid"
 )
@@ -16,7 +17,13 @@ type CreateProductCommand struct {
 }
 
 func NewCreateProductCommand(name string, description string, price float64) *CreateProductCommand {
-	return &CreateProductCommand{ProductID: uuid.NewV4(), Name: name, Description: description, Price: price, CreatedAt: time.Now()}
+	return &CreateProductCommand{
+		ProductID:   uuid.NewV4(),
+		Name:        name,
+		Description: description,
+		Price:       price,
+		CreatedAt:   time.Now(),
+	}
 }
 
 func MapCreateProductToProduct(command *CreateProductCommand) *models.Product {

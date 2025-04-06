@@ -5,13 +5,15 @@ package creatingproduct
 
 import (
 	"context"
-	"github.com/brianvoe/gofakeit/v6"
-	"github.com/mehdihadeli/go-mediatr"
+	"testing"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/commands"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/mehdihadeli/go-mediatr"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type createProductIntegrationTests struct {

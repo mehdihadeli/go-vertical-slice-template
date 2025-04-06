@@ -5,18 +5,19 @@ package gettingproductbyid
 
 import (
 	"fmt"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"net/http"
 	"testing"
 	"time"
 
-	"github.com/brianvoe/gofakeit/v6"
-	"github.com/mehdihadeli/go-mediatr"
 	dtos2 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/queries"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/mappings"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/unittest"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/mehdihadeli/go-mediatr"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
 )

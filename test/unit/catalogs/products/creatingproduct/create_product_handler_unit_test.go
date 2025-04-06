@@ -5,16 +5,17 @@ package creatingproduct
 
 import (
 	"fmt"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"net/http"
 	"testing"
 	"time"
 
-	"github.com/brianvoe/gofakeit/v6"
-	"github.com/mehdihadeli/go-mediatr"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/commands"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/unittest"
+
+	"github.com/brianvoe/gofakeit/v6"
+	"github.com/mehdihadeli/go-mediatr"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
 )

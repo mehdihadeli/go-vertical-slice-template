@@ -1,17 +1,21 @@
 package app
 
 import (
+	"testing"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/applicationbuilder"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+
 	"github.com/spf13/viper"
 	"go.uber.org/dig"
-	"testing"
 )
 
-type BuilderOption func(*applicationbuilder.ApplicationBuilder)
-type ConfigurationOption func(*application.Application)
+type (
+	BuilderOption       func(*applicationbuilder.ApplicationBuilder)
+	ConfigurationOption func(*application.Application)
+)
 
 type TestApp struct {
 	*App

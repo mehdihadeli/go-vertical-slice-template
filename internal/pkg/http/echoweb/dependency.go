@@ -1,15 +1,17 @@
 package echoweb
 
 import (
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"strings"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 	handlers "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/hadnlers"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/middlewares/log"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/middlewares/problemdetail"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/dig"
-	"strings"
 )
 
 func AddEcho(container *dig.Container) error {

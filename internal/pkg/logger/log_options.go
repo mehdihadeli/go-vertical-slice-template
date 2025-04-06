@@ -1,10 +1,11 @@
 package logger
 
 import (
-	"github.com/iancoleman/strcase"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
+
+	"github.com/iancoleman/strcase"
 )
 
 var optionName = strcase.ToLowerCamel(typemapper.GetGenericTypeNameByT[LogOptions]())

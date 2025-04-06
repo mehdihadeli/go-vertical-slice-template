@@ -2,8 +2,9 @@ package application
 
 import (
 	"fmt"
-	"go.uber.org/dig"
 	"reflect"
+
+	"go.uber.org/dig"
 )
 
 // ResolveRequiredDependency resolves a dependency from the container by type and panics if it fails

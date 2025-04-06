@@ -2,14 +2,16 @@ package commands
 
 import (
 	"context"
-	"github.com/mehdihadeli/go-mediatr"
+	"net/http"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/events"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/mappings"
 	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+
+	"github.com/mehdihadeli/go-mediatr"
 	uuid "github.com/satori/go.uuid"
-	"net/http"
 )
 
 type CreateProductCommandHandler struct {
@@ -20,7 +22,10 @@ func NewCreateProductCommandHandler(productRepository contracts.ProductRepositor
 	return &CreateProductCommandHandler{productRepository: productRepository}
 }
 
-func (c *CreateProductCommandHandler) Handle(ctx context.Context, command *CreateProductCommand) (*dtos.CreateProductCommandResponse, error) {
+func (c *CreateProductCommandHandler) Handle(
+	ctx context.Context,
+	command *CreateProductCommand,
+) (*dtos.CreateProductCommandResponse, error) {
 	if command == nil {
 		return nil, customErrors.NewApplicationErrorWithCode("command cannot be nil", http.StatusBadRequest)
 	}

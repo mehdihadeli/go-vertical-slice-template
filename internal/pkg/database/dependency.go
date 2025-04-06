@@ -1,10 +1,10 @@
 package database
 
 import (
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
+
 	"go.uber.org/dig"
 	"gorm.io/gorm"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 )
 
 func AddGorm(container *dig.Container) error {

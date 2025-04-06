@@ -1,17 +1,17 @@
 package endpoints
 
 import (
-	"emperror.dev/errors"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"net/http"
-
-	"github.com/labstack/echo/v4"
-	"github.com/mehdihadeli/go-mediatr"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/queries"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+
+	"emperror.dev/errors"
+	"github.com/labstack/echo/v4"
+	"github.com/mehdihadeli/go-mediatr"
 )
 
 type getProductByIdEndpoint struct {
@@ -51,8 +51,10 @@ func (ep *getProductByIdEndpoint) handler() echo.HandlerFunc {
 			return customErrors.NewValidationErrorWrap(err, "validation error")
 		}
 
-		queryResult, err := mediatr.Send[*queries.GetProductByIdQuery, *dtos.GetProductByIdQueryResponse](ctx.Request().Context(), query)
-
+		queryResult, err := mediatr.Send[*queries.GetProductByIdQuery, *dtos.GetProductByIdQueryResponse](
+			ctx.Request().Context(),
+			query,
+		)
 		if err != nil {
 			return errors.WithMessage(
 				err,

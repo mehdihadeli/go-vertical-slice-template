@@ -1,8 +1,6 @@
 package application
 
 import (
-	"emperror.dev/errors"
-	"github.com/mehdihadeli/go-mediatr"
 	"github.com/mehdihadeli/go-vertical-slice-template/docs"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/commands"
@@ -11,6 +9,9 @@ import (
 	dtos2 "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/queries"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/behaviours"
+
+	"emperror.dev/errors"
+	"github.com/mehdihadeli/go-mediatr"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
@@ -29,19 +30,22 @@ func (a *Application) configMediator() error {
 	return a.ResolveDependencyFunc(func(productRepository contracts.ProductRepository) error {
 		loggerPipeline := &behaviours.RequestLoggerBehaviour{}
 		err := mediatr.RegisterRequestPipelineBehaviors(loggerPipeline)
-
 		if err != nil {
 			return err
 		}
 
 		createProductCommandHandler := commands.NewCreateProductCommandHandler(productRepository)
-		err = mediatr.RegisterRequestHandler[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](createProductCommandHandler)
+		err = mediatr.RegisterRequestHandler[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](
+			createProductCommandHandler,
+		)
 		if err != nil {
 			return err
 		}
 
 		getByIdQueryHandler := queries.NewGetProductByIdHandler(productRepository)
-		err = mediatr.RegisterRequestHandler[*queries.GetProductByIdQuery, *dtos2.GetProductByIdQueryResponse](getByIdQueryHandler)
+		err = mediatr.RegisterRequestHandler[*queries.GetProductByIdQuery, *dtos2.GetProductByIdQueryResponse](
+			getByIdQueryHandler,
+		)
 		if err != nil {
 			return err
 		}
@@ -54,7 +58,6 @@ func (a *Application) configMediator() error {
 
 		return nil
 	})
-
 }
 
 func (a *Application) configSwagger() {

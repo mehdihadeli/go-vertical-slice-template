@@ -1,15 +1,16 @@
 package applicationbuilder
 
 import (
-	"emperror.dev/errors"
-	"github.com/go-playground/validator"
-	"github.com/labstack/echo/v4"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
 	creatingproductendpoint "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/endpoints"
 	gettingproductbyidendpoint "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/endpoints"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/repository"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+
+	"emperror.dev/errors"
+	"github.com/go-playground/validator"
+	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
@@ -41,7 +42,6 @@ func (b *ApplicationBuilder) addRoutes() error {
 
 		return productsRouteParams, nil
 	})
-
 	if err != nil {
 		return errors.WrapIf(err, "Error in mapping endpoints")
 	}
@@ -53,7 +53,6 @@ func (b *ApplicationBuilder) addRoutes() error {
 
 		return endpoints, nil
 	})
-
 	if err != nil {
 		return errors.WrapIf(err, "Error in mapping endpoints")
 	}
@@ -65,7 +64,6 @@ func (b *ApplicationBuilder) addRepositories() error {
 	err := b.Container.Provide(func(g *gorm.DB, l logger.Logger) (contracts.ProductRepository, error) {
 		return repository.NewInMemoryProductRepository(g, l), nil
 	})
-
 	if err != nil {
 		return errors.WrapIf(err, "Error in registering repositories")
 	}

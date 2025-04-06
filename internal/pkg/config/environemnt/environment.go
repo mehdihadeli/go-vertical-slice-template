@@ -4,10 +4,10 @@ import (
 	"log"
 	"syscall"
 
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 )
 
 type Environment string

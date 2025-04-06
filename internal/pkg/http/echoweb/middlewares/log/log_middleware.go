@@ -2,8 +2,9 @@ package log
 
 import (
 	"fmt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	"time"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

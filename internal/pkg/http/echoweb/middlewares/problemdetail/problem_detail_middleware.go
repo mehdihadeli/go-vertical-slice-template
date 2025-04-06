@@ -1,9 +1,10 @@
 package problemdetail
 
 import (
+	problemDetails "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/problemdetails"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	problemDetails "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/problemdetails"
 )
 
 func ProblemDetail(opts ...Option) echo.MiddlewareFunc {

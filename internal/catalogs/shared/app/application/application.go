@@ -3,9 +3,6 @@ package application
 import (
 	"context"
 	"fmt"
-	"github.com/labstack/echo/v4"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
-	"go.uber.org/dig"
 	"log"
 	"net/http"
 	"os"
@@ -15,7 +12,11 @@ import (
 	"time"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+
+	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
+	"go.uber.org/dig"
 )
 
 type Application struct {
@@ -35,7 +36,6 @@ func NewApplication(container *dig.Container) *Application {
 
 		return nil
 	})
-
 	if err != nil {
 		app.Logger.Fatal(err)
 	}
@@ -55,7 +55,7 @@ func (a *Application) ResolveRequiredDependencyFunc(function interface{}) {
 }
 
 func (a *Application) Run() {
-	//https://dev.to/mokiat/proper-http-shutdown-in-go-3fji
+	// https://dev.to/mokiat/proper-http-shutdown-in-go-3fji
 	// https://github.com/uber-go/fx/blob/master/app_test.go
 	defaultDuration := time.Second * 20
 

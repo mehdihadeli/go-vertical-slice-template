@@ -2,12 +2,14 @@ package gettingproductbyid
 
 import (
 	"context"
-	"github.com/gavv/httpexpect/v2"
-	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
-	uuid "github.com/satori/go.uuid"
-	"github.com/stretchr/testify/suite"
 	"net/http"
 	"testing"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
+
+	"github.com/gavv/httpexpect/v2"
+	uuid "github.com/satori/go.uuid"
+	"github.com/stretchr/testify/suite"
 )
 
 type getProductByIdE2ETest struct {

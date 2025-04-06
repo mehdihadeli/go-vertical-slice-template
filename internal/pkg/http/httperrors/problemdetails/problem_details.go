@@ -3,12 +3,13 @@ package problemDetails
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
-	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
-	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 	"net/http"
 	"reflect"
 	"time"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
+	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
+	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 
 	"emperror.dev/errors"
 )

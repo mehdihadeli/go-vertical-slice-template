@@ -2,8 +2,9 @@ package hypothesis
 
 import (
 	"context"
-	testUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/utils"
 	"time"
+
+	testUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/utils"
 
 	"github.com/goccy/go-reflect"
 	"github.com/stretchr/testify/assert"

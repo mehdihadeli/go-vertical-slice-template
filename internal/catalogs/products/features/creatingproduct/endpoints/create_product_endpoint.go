@@ -1,17 +1,17 @@
 package endpoints
 
 import (
-	"emperror.dev/errors"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"net/http"
-
-	"github.com/labstack/echo/v4"
-	"github.com/mehdihadeli/go-mediatr"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/commands"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/dtos"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+
+	"emperror.dev/errors"
+	"github.com/labstack/echo/v4"
+	"github.com/mehdihadeli/go-mediatr"
 )
 
 type createProductEndpoint struct {
@@ -50,8 +50,10 @@ func (ep *createProductEndpoint) handler() echo.HandlerFunc {
 		}
 
 		command := commands.NewCreateProductCommand(request.Name, request.Description, request.Price)
-		result, err := mediatr.Send[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](ctx.Request().Context(), command)
-
+		result, err := mediatr.Send[*commands.CreateProductCommand, *dtos.CreateProductCommandResponse](
+			ctx.Request().Context(),
+			command,
+		)
 		if err != nil {
 			return errors.WithMessage(
 				err,

@@ -1,12 +1,14 @@
 package application
 
 import (
-	"emperror.dev/errors"
+	"time"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
+
+	"emperror.dev/errors"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
-	"time"
 )
 
 func (a *Application) ConfigCatalogs() error {
@@ -41,7 +43,15 @@ func (a *Application) migrateDatabase() error {
 			return err
 		}
 
-		g.Create(&models.Product{Name: "Test", CreatedAt: time.Now(), ProductID: uuid.NewV4(), Price: 100, Description: "Test description"})
+		g.Create(
+			&models.Product{
+				Name:        "Test",
+				CreatedAt:   time.Now(),
+				ProductID:   uuid.NewV4(),
+				Price:       100,
+				Description: "Test description",
+			},
+		)
 
 		return nil
 	})

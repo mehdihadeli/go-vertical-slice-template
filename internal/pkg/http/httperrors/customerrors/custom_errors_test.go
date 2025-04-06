@@ -2,10 +2,11 @@ package customErrors
 
 import (
 	"fmt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
-	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 	"net/http"
 	"testing"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
+	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 
 	"emperror.dev/errors"
 	"github.com/stretchr/testify/assert"

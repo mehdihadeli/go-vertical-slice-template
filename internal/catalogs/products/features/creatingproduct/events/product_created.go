@@ -1,8 +1,9 @@
 package events
 
 import (
-	uuid "github.com/satori/go.uuid"
 	"time"
+
+	uuid "github.com/satori/go.uuid"
 )
 
 type ProductCreatedEvent struct {
@@ -13,6 +14,12 @@ type ProductCreatedEvent struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
-func NewProductCreatedEvent(id uuid.UUID, name string, description string, price float64, createdAt time.Time) *ProductCreatedEvent {
+func NewProductCreatedEvent(
+	id uuid.UUID,
+	name string,
+	description string,
+	price float64,
+	createdAt time.Time,
+) *ProductCreatedEvent {
 	return &ProductCreatedEvent{ProductID: id, Name: name, Description: description, Price: price, CreatedAt: createdAt}
 }

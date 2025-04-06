@@ -2,8 +2,9 @@ package contracts
 
 import (
 	"context"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 	"testing"
+
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 )
 
 type PostgresContainerOptions struct {

@@ -2,17 +2,16 @@ package repository
 
 import (
 	"context"
-	"emperror.dev/errors"
 	"fmt"
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
-
-	"gorm.io/gorm"
-
-	uuid "github.com/satori/go.uuid"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+
+	"emperror.dev/errors"
+	uuid "github.com/satori/go.uuid"
+	"gorm.io/gorm"
 )
 
 type ProductRepositoryGorm struct {

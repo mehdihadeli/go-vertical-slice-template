@@ -6,13 +6,15 @@ package gettingproductbyid
 import (
 	"context"
 	"fmt"
-	"github.com/mehdihadeli/go-mediatr"
+	"testing"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/dtos"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/queries"
 	"github.com/mehdihadeli/go-vertical-slice-template/test/testfixtures/integration"
+
+	"github.com/mehdihadeli/go-mediatr"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
-	"testing"
 )
 
 type getProductByIdIntegrationTests struct {

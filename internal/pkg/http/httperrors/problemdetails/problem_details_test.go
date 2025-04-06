@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"testing"
 
+	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
+
 	"emperror.dev/errors"
 	"github.com/stretchr/testify/assert"
-
-	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 )
 
 func Test_Domain_Err(t *testing.T) {

@@ -5,14 +5,14 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
+
 	"emperror.dev/errors"
 	"github.com/caarlos0/env/v8"
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 )
 
 func BindConfig[T any](environments ...environemnt.Environment) (T, error) {

@@ -2,15 +2,17 @@ package unittest
 
 import (
 	"context"
+	"testing"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
 	"github.com/mehdihadeli/go-vertical-slice-template/mocks"
+
 	"github.com/stretchr/testify/suite"
 	"gorm.io/gorm"
-	"testing"
 )
 
 type UnitTestSharedFixture struct {
