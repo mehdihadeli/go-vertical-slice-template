@@ -2,7 +2,7 @@
 
 > A Golang boilerplate template, based on [Vertical Slice Architecture](https://jimmybogard.com/vertical-slice-architecture/) and [CQRS pattern](https://event-driven.io/en/cqrs_facts_and_myths_explained/) with using [Echo](https://github.com/labstack/echo), [Gorm](https://github.com/go-gorm/gorm), [Zap](https://github.com/go-gorm/gorm), [Viper](https://github.com/spf13/viper), [MediatR](https://github.com/mehdihadeli/Go-MediatR/) for CQRS and [uber-go/dig](https://github.com/uber-go/dig) for Dependency Injection.
 
-**You can use this project as a template for building your backend application in Go, it's designed as a helpful starting point for your development**
+**You can use this project as a template for building your backend application in Go, it's designed as a helpful starting point for your development.**
 
 ## Features
 
