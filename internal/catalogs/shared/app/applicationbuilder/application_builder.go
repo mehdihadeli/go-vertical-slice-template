@@ -6,14 +6,17 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
-	envConfig "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
+	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
+	"github.com/labstack/echo/v4"
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 )
 
 type Override func(builder *ApplicationBuilder) error
@@ -21,8 +24,12 @@ type Override func(builder *ApplicationBuilder) error
 type ApplicationBuilder struct {
 	Logger            logger.Logger
 	Environment       environemnt.Environment
-	ServiceCollection *dependency.ServiceCollection
-	overriders        []Override
+	appOptions        *config.AppOptions
+	echoOptions       *config2.EchoHttpOptions
+	gormDB            *gorm.DB
+	echo              *echo.Echo
+	endpoints         []contracts.Endpoint
+	productRepository contracts.ProductRepository
 }
 
 func NewApplicationBuilder(environments ...environemnt.Environment) *ApplicationBuilder {
@@ -38,33 +45,23 @@ func NewApplicationBuilder(environments ...environemnt.Environment) *Application
 		log.Fatal(err)
 	}
 
-	appBuilder := &ApplicationBuilder{Logger: l, Environment: env, ServiceCollection: &dependency.ServiceCollection{}}
-
-	envConfig.AddEnv(appBuilder.ServiceCollection, environments...)
-	logger.AddLogger(appBuilder.ServiceCollection, env)
+	appBuilder := &ApplicationBuilder{Logger: l, Environment: env}
 
 	return appBuilder
 }
 
 func (b *ApplicationBuilder) Build() *application.Application {
-	// Apply overrides first
-	for _, override := range b.overriders {
-		err := override(b)
-		if err != nil {
-			b.Logger.Fatal(err)
-		}
-	}
-
-	app := application.NewApplication(b.ServiceCollection.Build())
+	app := application.NewApplication(
+		b.Environment,
+		b.Logger,
+		b.gormDB,
+		b.echo,
+		b.echoOptions,
+		b.productRepository,
+		b.endpoints,
+	)
 
 	return app
-}
-
-// WithOverride Can override test configs here, or use our seperated `TestApplicationBuilder`
-func (b *ApplicationBuilder) WithOverride(builder Override) *ApplicationBuilder {
-	b.overriders = append(b.overriders, builder)
-
-	return b
 }
 
 func setConfigPath() {

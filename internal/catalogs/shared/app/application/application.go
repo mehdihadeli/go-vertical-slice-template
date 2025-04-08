@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
@@ -27,21 +27,19 @@ type Application struct {
 	GormDB            *gorm.DB
 	ProductRepository contracts.ProductRepository
 	Endpoints         []contracts.Endpoint
+	Environment       environemnt.Environment
 }
 
-func NewApplication(sp *dependency.ServiceProvider) *Application {
-	e := dependency.GetGenericRequiredService[*echo.Echo](sp)
-	g := dependency.GetGenericRequiredService[*gorm.DB](sp)
-	l := dependency.GetGenericRequiredService[logger.Logger](sp)
-	endpoints := dependency.GetGenericRequiredService[[]contracts.Endpoint](sp)
-	productRepository := dependency.GetGenericRequiredService[contracts.ProductRepository](sp)
-	echoOptions := dependency.GetGenericRequiredService[*config2.EchoHttpOptions](sp)
-
+func NewApplication(env environemnt.Environment, l logger.Logger, g *gorm.DB, e *echo.Echo,
+	echoOptions *config2.EchoHttpOptions, productRepository contracts.ProductRepository,
+	endpoints []contracts.Endpoint,
+) *Application {
 	app := &Application{
 		Echo:              e,
 		Logger:            l,
 		EchoOptions:       echoOptions,
 		GormDB:            g,
+		Environment:       env,
 		ProductRepository: productRepository,
 		Endpoints:         endpoints,
 	}

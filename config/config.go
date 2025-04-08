@@ -14,7 +14,7 @@ type AppOptions struct {
 	Name string `mapstructure:"name" env:"Name"`
 }
 
-func NewAppOptions(environment environemnt.Environment) (*AppOptions, error) {
+func ConfigAppOptions(environment environemnt.Environment) (*AppOptions, error) {
 	optionName := strcase.ToLowerCamel(typeMapper.GetGenericTypeNameByT[AppOptions]())
 	cfg, err := config.BindConfigKey[*AppOptions](optionName, environment)
 	if err != nil {

@@ -10,10 +10,10 @@ import (
 type GormOptions struct {
 	Host        string `mapstructure:"host"        env:"GORM_OPTIONS_HOST"`
 	Port        int    `mapstructure:"port"        env:"GORM_OPTIONS_PORT"`
-	User        string `mapstructure:"user"`
-	DBName      string `mapstructure:"dbName"`
+	User        string `mapstructure:"user"        env:"GORM_OPTIONS_USER"`
+	DBName      string `mapstructure:"dbName"      env:"GORM_OPTIONS_DATABASE_NAME"`
 	SSLMode     bool   `mapstructure:"sslMode"`
-	Password    string `mapstructure:"password"`
+	Password    string `mapstructure:"password"    env:"GORM_OPTIONS_PASSWORD"`
 	UseInMemory bool   `mapstructure:"useInMemory"`
 	UseSQLLite  bool   `mapstructure:"useSqlLite"`
 }

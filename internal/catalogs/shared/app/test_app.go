@@ -31,10 +31,6 @@ func NewTestApp() *TestApp {
 
 func (a *TestApp) RunTest(t *testing.T) *application.Application {
 	builder := createApplicationBuilder()
-	// Apply override builder options
-	for _, override := range a.overrides {
-		builder.WithOverride(override)
-	}
 
 	app := builder.Build()
 
@@ -43,11 +39,4 @@ func (a *TestApp) RunTest(t *testing.T) *application.Application {
 	app.RunTest(t)
 
 	return app
-}
-
-// WithOverrideBuilder Can override test configs here, or use our seperated `TestApplicationBuilder`
-func (a *TestApp) WithOverrideBuilder(override applicationbuilder.Override) *TestApp {
-	a.overrides = append(a.overrides, override)
-
-	return a
 }

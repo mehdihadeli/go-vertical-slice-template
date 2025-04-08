@@ -2,16 +2,15 @@ package integration
 
 import (
 	"context"
+	"os"
+	"strconv"
 	"testing"
 	"time"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/applicationbuilder"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
 	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
@@ -41,28 +40,26 @@ func NewIntegrationTestSharedFixture(
 ) *IntegrationTestSharedFixture {
 	lifetimeCtx := context.Background()
 
+	gormOptions, err := gormtestcontainer.GormContainerOptionsDecorator(
+		t,
+		lifetimeCtx,
+		defaultLogger.GetLogger(),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// we can override test configuration for gorm with env with higher priority for test
+	os.Setenv("GORM_OPTIONS_HOST", gormOptions.Host)
+	os.Setenv("GORM_OPTIONS_PORT", strconv.Itoa(gormOptions.Port))
+	os.Setenv("GORM_OPTIONS_USER", gormOptions.User)
+	os.Setenv("GORM_OPTIONS_PASSWORD", gormOptions.Password)
+	os.Setenv("GORM_OPTIONS_DATABASE_NAME", gormOptions.DBName)
+
 	// this fix root working directory problem in our test environment inner our fixture
 	environemnt.FixProjectRootWorkingDirectoryPath()
 
 	application := app.NewTestApp().
-		WithOverrideBuilder(func(builder *applicationbuilder.ApplicationBuilder) error {
-			gormOptions, err := gormtestcontainer.GormContainerOptionsDecorator(
-				t,
-				lifetimeCtx,
-				defaultLogger.GetLogger(),
-			)
-			if err != nil {
-				t.Fatal(err)
-			}
-			dependency.Add[*options.GormOptions](
-				builder.ServiceCollection,
-				func(sp *dependency.ServiceProvider) (*options.GormOptions, error) {
-					return gormOptions, nil
-				},
-			)
-
-			return nil
-		}).
 		RunTest(t)
 
 	integrationFixture := &IntegrationTestSharedFixture{
@@ -80,10 +77,6 @@ func (i *IntegrationTestSharedFixture) SetupSuite() {
 }
 
 func (i *IntegrationTestSharedFixture) SetupTest() {
-	//// we can override test configuration for gorm with env with higher priority for test
-	//os.Setenv("GORM_OPTIONS_HOST", "test_host")
-	//os.Setenv("GORM_OPTIONS_PORT", "test_port")
-
 	i.Log.Info("SetupTest started")
 
 	// migration will do in app configuration
