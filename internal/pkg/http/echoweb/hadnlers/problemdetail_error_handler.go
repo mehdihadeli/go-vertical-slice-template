@@ -4,7 +4,7 @@ import (
 	problemDetails "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/problemdetails"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
 )
 

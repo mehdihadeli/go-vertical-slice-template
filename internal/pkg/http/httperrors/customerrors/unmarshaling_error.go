@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewUnMarshalingError(message string) UnMarshalingError {
 	// `NewPlain` doesn't add stack-trace at all
-	unMarshalingErrMessage := errors.NewPlain("unMarshaling error")
+	unMarshalingErrMessage := errors.New("unMarshaling error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(unMarshalingErrMessage, message)
+	stackErr := errors.Wrap(unMarshalingErrMessage, message)
 
 	unMarshalingError := &unMarshalingError{
 		CustomError: NewCustomError(stackErr, http.StatusInternalServerError, message),
@@ -27,7 +27,7 @@ func NewUnMarshalingErrorWrap(err error, message string) UnMarshalingError {
 	// `WithMessage` doesn't add stack-trace at all
 	unMarshalingErrMessage := errors.WithMessage(err, "unMarshaling error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(unMarshalingErrMessage, message)
+	stackErr := errors.Wrap(unMarshalingErrMessage, message)
 
 	unMarshalingError := &unMarshalingError{
 		CustomError: NewCustomError(stackErr, http.StatusInternalServerError, message),

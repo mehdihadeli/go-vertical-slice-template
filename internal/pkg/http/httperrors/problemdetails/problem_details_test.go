@@ -6,7 +6,7 @@ import (
 
 	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -42,7 +42,7 @@ func Test_BadRequest_Err(t *testing.T) {
 
 func Test_Parse_Error(t *testing.T) {
 	// Bad-Request ProblemDetail
-	badRequestError := errors.WrapIf(customErrors.NewBadRequestError("bad-request error"), "bad request error")
+	badRequestError := errors.Wrap(customErrors.NewBadRequestError("bad-request error"), "bad request error")
 	badRequestPrb := ParseError(badRequestError)
 	assert.NotNil(t, badRequestPrb)
 	assert.Equal(t, badRequestPrb.GetStatus(), 400)

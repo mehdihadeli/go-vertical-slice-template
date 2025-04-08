@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewNotFoundError(message string) NotFoundError {
 	// `NewPlain` doesn't add stack-trace at all
-	notFoundErrMessage := errors.NewPlain("not found error")
+	notFoundErrMessage := errors.New("not found error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(notFoundErrMessage, message)
+	stackErr := errors.Wrap(notFoundErrMessage, message)
 
 	notFoundError := &notFoundError{
 		CustomError: NewCustomError(stackErr, http.StatusBadRequest, message),
@@ -27,7 +27,7 @@ func NewNotFoundErrorWrap(err error, message string) NotFoundError {
 	// `WithMessage` doesn't add stack-trace at all
 	notFoundErrMessage := errors.WithMessage(err, "not found error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(notFoundErrMessage, message)
+	stackErr := errors.Wrap(notFoundErrMessage, message)
 
 	notFoundError := &notFoundError{
 		CustomError: NewCustomError(stackErr, http.StatusNotFound, message),

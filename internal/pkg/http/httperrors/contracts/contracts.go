@@ -3,7 +3,7 @@ package contracts
 import (
 	"fmt"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors/errbase"
 )
 
 type Causer interface {
@@ -11,7 +11,7 @@ type Causer interface {
 }
 
 type StackTracer interface {
-	StackTrace() errors.StackTrace
+	StackTrace() errbase.StackTrace
 }
 
 type Wrapper interface {

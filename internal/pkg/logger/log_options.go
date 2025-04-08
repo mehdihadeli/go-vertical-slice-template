@@ -15,6 +15,6 @@ type LogOptions struct {
 	CallerEnabled bool   `mapstructure:"callerEnabled"`
 }
 
-func ProvideLogConfig(env environemnt.Environment) (*LogOptions, error) {
+func ConfigLopOptions(env environemnt.Environment) (*LogOptions, error) {
 	return config.BindConfigKey[*LogOptions](optionName, env)
 }

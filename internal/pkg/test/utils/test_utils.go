@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
 )
 

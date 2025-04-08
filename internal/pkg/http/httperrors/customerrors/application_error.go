@@ -3,7 +3,7 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewApplicationError(message string) ApplicationError {
@@ -12,9 +12,9 @@ func NewApplicationError(message string) ApplicationError {
 
 func NewApplicationErrorWithCode(message string, code int) ApplicationError {
 	// `NewPlain` doesn't add stack-trace at all
-	applicationErrMessage := errors.NewPlain("application error")
+	applicationErrMessage := errors.New("application error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(applicationErrMessage, message)
+	stackErr := errors.Wrap(applicationErrMessage, message)
 
 	applicationError := &applicationError{
 		CustomError: NewCustomError(stackErr, code, message),
@@ -39,7 +39,7 @@ func NewApplicationErrorWrapWithCode(
 	// `WithMessage` doesn't add stack-trace at all
 	applicationErrMessage := errors.WithMessage(err, "application error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(applicationErrMessage, message)
+	stackErr := errors.Wrap(applicationErrMessage, message)
 
 	applicationError := &applicationError{
 		CustomError: NewCustomError(stackErr, code, message),

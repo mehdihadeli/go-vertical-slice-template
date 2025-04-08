@@ -10,7 +10,7 @@ import (
 	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/go-playground/validator"
 )
 

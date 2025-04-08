@@ -6,19 +6,12 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb"
 )
 
-func (b *ApplicationBuilder) AddInfrastructure() {
-	err := config.AddAppConfig(b.Container)
-	if err != nil {
-		b.Logger.Fatal(err)
-	}
+func (b *ApplicationBuilder) AddInfrastructure() error {
+	config.AddAppConfig(b.ServiceCollection, b.Environment)
 
-	err = database.AddGorm(b.Container)
-	if err != nil {
-		b.Logger.Fatal(err)
-	}
+	database.AddGorm(b.ServiceCollection)
 
-	err = echoweb.AddEcho(b.Container)
-	if err != nil {
-		b.Logger.Fatal(err)
-	}
+	echoweb.AddEcho(b.ServiceCollection)
+
+	return nil
 }

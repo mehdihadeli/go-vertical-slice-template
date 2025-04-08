@@ -1,20 +1,24 @@
 package database
 
 import (
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
 
-	"go.uber.org/dig"
 	"gorm.io/gorm"
 )
 
-func AddGorm(container *dig.Container) error {
-	err := container.Provide(func() (*options.GormOptions, error) {
-		return options.ProvideConfig()
-	})
+func AddGorm(dependencies *dependency.ServiceCollection) {
+	dependency.Add[*options.GormOptions](
+		dependencies,
+		func(sp *dependency.ServiceProvider) (*options.GormOptions, error) {
+			environment := dependency.GetGenericRequiredService[environemnt.Environment](sp)
+			return options.ConfigGormOptions(environment)
+		},
+	)
 
-	err = container.Provide(func(opts *options.GormOptions) (*gorm.DB, error) {
-		return NewGorm(opts)
+	dependency.Add[*gorm.DB](dependencies, func(sp *dependency.ServiceProvider) (*gorm.DB, error) {
+		gormOptions := dependency.GetGenericRequiredService[*options.GormOptions](sp)
+		return NewGorm(gormOptions)
 	})
-
-	return err
 }

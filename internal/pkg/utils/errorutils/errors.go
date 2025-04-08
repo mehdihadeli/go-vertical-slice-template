@@ -8,7 +8,7 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 // CheckErrMessages check for specific messages contains in the error

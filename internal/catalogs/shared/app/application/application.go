@@ -2,7 +2,6 @@ package application
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,47 +10,43 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mehdihadeli/go-vertical-slice-template/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
+	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
+	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
-	"github.com/pkg/errors"
-	"go.uber.org/dig"
+	"gorm.io/gorm"
 )
 
 type Application struct {
-	Container *dig.Container
-	Echo      *echo.Echo
-	Logger    logger.Logger
-	Cfg       *config.Config
+	Echo              *echo.Echo
+	Logger            logger.Logger
+	EchoOptions       *config2.EchoHttpOptions
+	GormDB            *gorm.DB
+	ProductRepository contracts.ProductRepository
+	Endpoints         []contracts.Endpoint
 }
 
-func NewApplication(container *dig.Container) *Application {
-	app := &Application{}
-	err := container.Invoke(func(c *config.Config, e *echo.Echo, logger logger.Logger) error {
-		app.Container = container
-		app.Echo = e
-		app.Logger = logger
-		app.Cfg = c
+func NewApplication(sp *dependency.ServiceProvider) *Application {
+	e := dependency.GetGenericRequiredService[*echo.Echo](sp)
+	g := dependency.GetGenericRequiredService[*gorm.DB](sp)
+	l := dependency.GetGenericRequiredService[logger.Logger](sp)
+	endpoints := dependency.GetGenericRequiredService[[]contracts.Endpoint](sp)
+	productRepository := dependency.GetGenericRequiredService[contracts.ProductRepository](sp)
+	echoOptions := dependency.GetGenericRequiredService[*config2.EchoHttpOptions](sp)
 
-		return nil
-	})
-	if err != nil {
-		app.Logger.Fatal(err)
+	app := &Application{
+		Echo:              e,
+		Logger:            l,
+		EchoOptions:       echoOptions,
+		GormDB:            g,
+		ProductRepository: productRepository,
+		Endpoints:         endpoints,
 	}
 
 	return app
-}
-
-func (a *Application) ResolveDependencyFunc(function interface{}) error {
-	return a.Container.Invoke(function)
-}
-
-func (a *Application) ResolveRequiredDependencyFunc(function interface{}) {
-	err := a.Container.Invoke(function)
-	if err != nil {
-		panic(fmt.Sprintf("failed to resolve dependency: %v", err))
-	}
 }
 
 func (a *Application) Run() {
@@ -126,7 +121,7 @@ func echoStopHook(stopCtx context.Context, application *Application) {
 func echoStartHook(startCtx context.Context, application *Application) {
 	go func() {
 		// When Shutdown is called, Serve, ListenAndServe, and ListenAndServeTLS immediately return ErrServerClosed. Make sure the program doesn't exit and waits instead for Shutdown to return.
-		if err := application.Echo.Start(application.Cfg.EchoHttpOptions.Port); !errors.Is(err, http.ErrServerClosed) {
+		if err := application.Echo.Start(application.EchoOptions.Port); !errors.Is(err, http.ErrServerClosed) {
 			application.Logger.Fatalf("HTTP server error: %v", err)
 		}
 		application.Logger.Info("Stopped serving new HTTP connections.")

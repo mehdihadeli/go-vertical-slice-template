@@ -2,24 +2,16 @@ package logger
 
 import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
-
-	"go.uber.org/dig"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
 )
 
-func AddLogger(container *dig.Container) error {
-	err := container.Provide(func(environment environemnt.Environment) (*LogOptions, error) {
-		return ProvideLogConfig(environment)
+func AddLogger(dependencies *dependency.ServiceCollection, environment environemnt.Environment) {
+	dependency.Add[*LogOptions](dependencies, func(sp *dependency.ServiceProvider) (*LogOptions, error) {
+		return ConfigLopOptions(environment)
 	})
-	if err != nil {
-		return err
-	}
 
-	err = container.Provide(func(opts *LogOptions, environment environemnt.Environment) Logger {
-		return NewZapLogger(opts, environment)
+	dependency.Add[Logger](dependencies, func(sp *dependency.ServiceProvider) (Logger, error) {
+		options := dependency.GetGenericRequiredService[*LogOptions](sp)
+		return NewZapLogger(environment, options)
 	})
-	if err != nil {
-		return err
-	}
-
-	return err
 }

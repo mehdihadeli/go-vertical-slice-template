@@ -5,30 +5,32 @@ import (
 	"testing"
 	"time"
 
-	"github.com/mehdihadeli/go-vertical-slice-template/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/models"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/applicationbuilder"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
+	config2 "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
-	gotmtestcontainer "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/containers/testcontainer/gorm"
+	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
+	gormtestcontainer "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/containers/testcontainer/gorm"
 
-	"emperror.dev/errors"
 	"github.com/brianvoe/gofakeit/v6"
+	"github.com/cockroachdb/errors"
 	uuid "github.com/satori/go.uuid"
 	"github.com/stretchr/testify/suite"
-	"go.uber.org/dig"
 	"gorm.io/gorm"
 
 	_ "github.com/lib/pq"
 )
 
 type IntegrationTestSharedFixture struct {
-	Cfg               *config.Config
+	EchoHttpOptions   *config2.EchoHttpOptions
 	Log               logger.Logger
-	Container         *dig.Container
 	ProductRepository contracts.ProductRepository
-	Gorm              *gorm.DB
+	GormDB            *gorm.DB
 	BaseAddress       string
 	Items             []*models.Product
 	suite.Suite
@@ -37,28 +39,38 @@ type IntegrationTestSharedFixture struct {
 func NewIntegrationTestSharedFixture(
 	t *testing.T,
 ) *IntegrationTestSharedFixture {
+	lifetimeCtx := context.Background()
+
 	// this fix root working directory problem in our test environment inner our fixture
 	environemnt.FixProjectRootWorkingDirectoryPath()
 
-	lifetimeCtx := context.Background()
-	container := app.NewTestApp().
-		WithOverrideBuilder(gotmtestcontainer.GormContainerOptionsDecorator(t, lifetimeCtx)).
+	application := app.NewTestApp().
+		WithOverrideBuilder(func(builder *applicationbuilder.ApplicationBuilder) error {
+			gormOptions, err := gormtestcontainer.GormContainerOptionsDecorator(
+				t,
+				lifetimeCtx,
+				defaultLogger.GetLogger(),
+			)
+			if err != nil {
+				t.Fatal(err)
+			}
+			dependency.Add[*options.GormOptions](
+				builder.ServiceCollection,
+				func(sp *dependency.ServiceProvider) (*options.GormOptions, error) {
+					return gormOptions, nil
+				},
+			)
+
+			return nil
+		}).
 		RunTest(t)
 
-	integrationFixture := &IntegrationTestSharedFixture{}
-
-	err := container.Invoke(
-		func(l logger.Logger, db *gorm.DB, cfg *config.Config, productRepository contracts.ProductRepository) {
-			integrationFixture.Log = l
-			integrationFixture.Container = container
-			integrationFixture.Gorm = db
-			integrationFixture.Cfg = cfg
-			integrationFixture.BaseAddress = cfg.EchoHttpOptions.BasePathAddress()
-			integrationFixture.ProductRepository = productRepository
-		},
-	)
-	if err != nil {
-		t.Fatal(err)
+	integrationFixture := &IntegrationTestSharedFixture{
+		EchoHttpOptions:   application.EchoOptions,
+		Log:               application.Logger,
+		ProductRepository: application.ProductRepository,
+		GormDB:            application.GormDB,
+		BaseAddress:       application.EchoOptions.BasePathAddress(),
 	}
 
 	return integrationFixture
@@ -68,13 +80,17 @@ func (i *IntegrationTestSharedFixture) SetupSuite() {
 }
 
 func (i *IntegrationTestSharedFixture) SetupTest() {
+	//// we can override test configuration for gorm with env with higher priority for test
+	//os.Setenv("GORM_OPTIONS_HOST", "test_host")
+	//os.Setenv("GORM_OPTIONS_PORT", "test_port")
+
 	i.Log.Info("SetupTest started")
 
 	// migration will do in app configuration
 	// seed data for our tests - app seed doesn't run in test environment
-	res, err := seedDataManually(i.Gorm)
+	res, err := seedDataManually(i.GormDB)
 	if err != nil {
-		i.Log.Error(errors.WrapIf(err, "error in seeding data in postgres"))
+		i.Log.Error(errors.Wrap(err, "error in seeding data in postgres"))
 	}
 
 	i.Items = res
@@ -84,7 +100,7 @@ func (i *IntegrationTestSharedFixture) TearDownTest() {
 	i.Log.Info("TearDownTest started")
 
 	if err := i.cleanupPostgresData(); err != nil {
-		i.Log.Error(errors.WrapIf(err, "error in cleanup postgres data"))
+		i.Log.Error(errors.Wrap(err, "error in cleanup postgres data"))
 	}
 }
 
@@ -92,7 +108,7 @@ func (i *IntegrationTestSharedFixture) cleanupPostgresData() error {
 	tables := []string{"products"}
 	// Iterate over the tables and delete all records
 	for _, table := range tables {
-		err := i.Gorm.Exec("DELETE FROM " + table).Error
+		err := i.GormDB.Exec("DELETE FROM " + table).Error
 
 		return err
 	}
@@ -120,7 +136,7 @@ func seedDataManually(gormDB *gorm.DB) ([]*models.Product, error) {
 
 	err := gormDB.CreateInBatches(products, len(products)).Error
 	if err != nil {
-		return nil, errors.WrapIf(err, "error in seed database")
+		return nil, errors.Wrap(err, "error in seed database")
 	}
 
 	return products, nil

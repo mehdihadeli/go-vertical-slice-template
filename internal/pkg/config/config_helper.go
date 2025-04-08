@@ -9,8 +9,8 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 
-	"emperror.dev/errors"
-	"github.com/caarlos0/env/v8"
+	"github.com/caarlos0/env/v11"
+	"github.com/cockroachdb/errors"
 	"github.com/mcuadros/go-defaults"
 	"github.com/spf13/viper"
 )
@@ -52,16 +52,16 @@ func BindConfigKey[T any](configKey string, environments ...environemnt.Environm
 	viper.SetConfigType(constants.Json)
 
 	if err := viper.ReadInConfig(); err != nil {
-		return *new(T), errors.WrapIf(err, "viper.ReadInConfig")
+		return *new(T), errors.Wrap(err, "viper.ReadInConfig")
 	}
 
 	if len(configKey) == 0 {
 		if err := viper.Unmarshal(cfg); err != nil {
-			return *new(T), errors.WrapIf(err, "viper.Unmarshal")
+			return *new(T), errors.Wrap(err, "viper.Unmarshal")
 		}
 	} else {
 		if err := viper.UnmarshalKey(configKey, cfg); err != nil {
-			return *new(T), errors.WrapIf(err, "viper.Unmarshal")
+			return *new(T), errors.Wrap(err, "viper.Unmarshal")
 		}
 	}
 

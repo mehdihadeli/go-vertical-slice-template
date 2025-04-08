@@ -8,7 +8,7 @@ import (
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/spf13/viper"
 )
 
@@ -64,7 +64,7 @@ func searchRootDirectory(
 	// List files and directories in the current directory
 	files, err := os.ReadDir(dir)
 	if err != nil {
-		return "", errors.WrapIf(err, "Error reading directory")
+		return "", errors.Wrap(err, "Error reading directory")
 	}
 
 	for _, file := range files {
@@ -83,7 +83,7 @@ func searchRootDirectory(
 	parentDir := filepath.Dir(dir)
 	if parentDir == dir {
 		// We've reached the root directory, and no go.mod file was found
-		return "", errors.WrapIf(err, "No go.mod file found")
+		return "", errors.Wrap(err, "No go.mod file found")
 	}
 
 	return searchRootDirectory(parentDir)

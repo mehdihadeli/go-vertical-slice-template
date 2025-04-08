@@ -1,62 +1,25 @@
 package echoweb
 
 import (
-	"strings"
-
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
-	handlers "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/hadnlers"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/middlewares/log"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/middlewares/problemdetail"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/echoweb/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
-	"go.uber.org/dig"
 )
 
-func AddEcho(container *dig.Container) error {
-	err := container.Provide(func(l logger.Logger) *echo.Echo {
-		e := echo.New()
-		e.HideBanner = true
+func AddEcho(dependencies *dependency.ServiceCollection) {
+	dependency.Add[*config.EchoHttpOptions](
+		dependencies,
+		func(sp *dependency.ServiceProvider) (*config.EchoHttpOptions, error) {
+			environment := dependency.GetGenericRequiredService[environemnt.Environment](sp)
+			return config.ConfigEchoOptions(environment)
+		},
+	)
 
-		skipper := func(c echo.Context) bool {
-			return strings.Contains(c.Request().URL.Path, "swagger") ||
-				strings.Contains(c.Request().URL.Path, "metrics") ||
-				strings.Contains(c.Request().URL.Path, "health") ||
-				strings.Contains(c.Request().URL.Path, "favicon.ico")
-		}
-
-		// set error handler
-		e.HTTPErrorHandler = func(err error, c echo.Context) {
-			// bypass skip endpoints and its error
-			if skipper(c) {
-				return
-			}
-
-			handlers.ProblemDetailErrorHandlerFunc(err, c, l)
-		}
-
-		// log errors and information
-		e.Use(
-			log.EchoLogger(
-				l,
-				log.WithSkipper(skipper),
-			),
-		)
-		e.Use(middleware.BodyLimit(constants.BodyLimit))
-		e.Use(middleware.RequestID())
-		e.Use(middleware.GzipWithConfig(middleware.GzipConfig{
-			Level:   constants.GzipLevel,
-			Skipper: skipper,
-		}))
-		// should be last middleware
-		e.Use(problemdetail.ProblemDetail(problemdetail.WithSkipper(skipper)))
-
-		return e
+	dependency.Add[*echo.Echo](dependencies, func(sp *dependency.ServiceProvider) (*echo.Echo, error) {
+		l := dependency.GetGenericRequiredService[logger.Logger](sp)
+		return NewEcho(l)
 	})
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

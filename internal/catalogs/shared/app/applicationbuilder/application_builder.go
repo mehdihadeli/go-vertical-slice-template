@@ -7,80 +7,63 @@ import (
 	"strings"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
+	envConfig "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
 	"github.com/spf13/viper"
-	"go.uber.org/dig"
 )
 
-type ApplicationBuilder struct {
-	Container   *dig.Container
-	Logger      logger.Logger
-	Environment environemnt.Environment
-	overrides   []*Override
-}
+type Override func(builder *ApplicationBuilder) error
 
-type Override struct {
-	DecoratorFunc interface{}
-	Opts          []dig.DecorateOption
+type ApplicationBuilder struct {
+	Logger            logger.Logger
+	Environment       environemnt.Environment
+	ServiceCollection *dependency.ServiceCollection
+	overriders        []Override
 }
 
 func NewApplicationBuilder(environments ...environemnt.Environment) *ApplicationBuilder {
-	// Create the app container.
-	// Do not forget to delete it at the end.
-	// Create a Container with the default scopes (App, Request, SubRequest).
-	container := dig.New()
-
-	err := logger.AddLogger(container)
-	if err != nil {
-		log.Fatalln(err)
-	}
-
+	env := environemnt.ConfigEnv(environments...)
 	setConfigPath()
-	err = config.AddEnv(container, environments...)
+
+	lopOptions, err := logger.ConfigLopOptions(env)
 	if err != nil {
-		log.Fatalln(err)
+		log.Fatal(err)
+	}
+	l, err := logger.NewZapLogger(env, lopOptions)
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	var l logger.Logger
-	var env environemnt.Environment
+	appBuilder := &ApplicationBuilder{Logger: l, Environment: env, ServiceCollection: &dependency.ServiceCollection{}}
 
-	err = container.Invoke(func(logger logger.Logger, environment environemnt.Environment) error {
-		env = environment
-		l = logger
-
-		return nil
-	})
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	appBuilder := &ApplicationBuilder{Container: container, Logger: l, Environment: env}
+	envConfig.AddEnv(appBuilder.ServiceCollection, environments...)
+	logger.AddLogger(appBuilder.ServiceCollection, env)
 
 	return appBuilder
 }
 
 func (b *ApplicationBuilder) Build() *application.Application {
 	// Apply overrides first
-	for _, override := range b.overrides {
-		err := b.Container.Decorate(override.DecoratorFunc, override.Opts...)
+	for _, override := range b.overriders {
+		err := override(b)
 		if err != nil {
 			b.Logger.Fatal(err)
 		}
 	}
 
-	container := b.Container
-	app := application.NewApplication(container)
+	app := application.NewApplication(b.ServiceCollection.Build())
 
 	return app
 }
 
 // WithOverride Can override test configs here, or use our seperated `TestApplicationBuilder`
-func (b *ApplicationBuilder) WithOverride(decoratorFunc interface{}, opts ...dig.DecorateOption) *ApplicationBuilder {
-	b.overrides = append(b.overrides, &Override{decoratorFunc, opts})
+func (b *ApplicationBuilder) WithOverride(builder Override) *ApplicationBuilder {
+	b.overriders = append(b.overriders, builder)
+
 	return b
 }
 

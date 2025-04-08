@@ -9,7 +9,7 @@ import (
 	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
@@ -19,7 +19,7 @@ type ProductRepositoryGorm struct {
 	logger logger.Logger
 }
 
-func NewInMemoryProductRepository(db *gorm.DB, logger logger.Logger) contracts.ProductRepository {
+func NewProductRepositoryGorm(db *gorm.DB, logger logger.Logger) contracts.ProductRepository {
 	return &ProductRepositoryGorm{db: db, logger: logger}
 }
 

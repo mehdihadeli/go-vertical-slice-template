@@ -5,19 +5,23 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 )
 
-var l logger.Logger
+var log logger.Logger
 
 func initLogger() {
-	l = logger.NewZapLogger(
-		&logger.LogOptions{CallerEnabled: false},
+	l, err := logger.NewZapLogger(
 		constants.Dev,
+		&logger.LogOptions{LogLevel: "debug"},
 	)
+	if err != nil {
+		panic(err)
+	}
+	log = l
 }
 
 func GetLogger() logger.Logger {
-	if l == nil {
+	if log == nil {
 		initLogger()
 	}
 
-	return l
+	return log
 }

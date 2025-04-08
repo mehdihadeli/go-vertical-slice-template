@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewForbiddenError(message string) ForbiddenError {
 	// `NewPlain` doesn't add stack-trace at all
-	forbiddenErrMessage := errors.NewPlain("forbidden error")
+	forbiddenErrMessage := errors.New("forbidden error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(forbiddenErrMessage, message)
+	stackErr := errors.Wrap(forbiddenErrMessage, message)
 
 	forbiddenError := &forbiddenError{
 		CustomError: NewCustomError(stackErr, http.StatusForbidden, message),
@@ -27,7 +27,7 @@ func NewForbiddenErrorWrap(err error, message string) ForbiddenError {
 	// `WithMessage` doesn't add stack-trace at all
 	forbiddenErrMessage := errors.WithMessage(err, "forbidden error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(forbiddenErrMessage, message)
+	stackErr := errors.Wrap(forbiddenErrMessage, message)
 
 	forbiddenError := &forbiddenError{
 		CustomError: NewCustomError(stackErr, http.StatusForbidden, message),

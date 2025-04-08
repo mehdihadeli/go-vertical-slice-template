@@ -1,14 +1,15 @@
 package applicationbuilder
 
 import (
+	"net/http"
+
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/contracts/params"
 	creatingproductendpoint "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/creatingproduct/endpoints"
 	gettingproductbyidendpoint "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/endpoints"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/repository"
-	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/dependency"
 
-	"emperror.dev/errors"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -29,44 +30,44 @@ func (b *ApplicationBuilder) AddCatalogs() error {
 }
 
 func (b *ApplicationBuilder) addRoutes() error {
-	// https://echo.labstack.com/docs/routing
-	err := b.Container.Provide(func(e *echo.Echo, l logger.Logger) (*params.ProductRouteParams, error) {
-		v1 := e.Group("/api/v1")
-		products := v1.Group("/products")
+	dependency.Add[[]contracts.Endpoint](
+		b.ServiceCollection,
+		func(sp *dependency.ServiceProvider) ([]contracts.Endpoint, error) {
+			e := dependency.GetGenericRequiredService[*echo.Echo](sp)
 
-		productsRouteParams := &params.ProductRouteParams{
-			Logger:        l,
-			Validator:     validator.New(),
-			ProductsGroup: products,
-		}
+			e.GET("/", func(c echo.Context) error {
+				return c.String(http.StatusOK, "Catalogs Api!")
+			})
 
-		return productsRouteParams, nil
-	})
-	if err != nil {
-		return errors.WrapIf(err, "Error in mapping endpoints")
-	}
+			// https://echo.labstack.com/docs/routing
+			v1 := e.Group("/api/v1")
+			products := v1.Group("/products")
+			productsRouteParams := &params.ProductRouteParams{
+				Logger:        b.Logger,
+				Validator:     validator.New(),
+				ProductsGroup: products,
+			}
 
-	err = b.Container.Provide(func(productRouteParams *params.ProductRouteParams) ([]contracts.Endpoint, error) {
-		createProductEndpoint := creatingproductendpoint.NewCreteProductEndpoint(productRouteParams)
-		getProductById := gettingproductbyidendpoint.NewGetProductByIdEndpoint(productRouteParams)
-		endpoints := []contracts.Endpoint{createProductEndpoint, getProductById}
+			createProductEndpoint := creatingproductendpoint.NewCreteProductEndpoint(productsRouteParams)
+			getProductById := gettingproductbyidendpoint.NewGetProductByIdEndpoint(productsRouteParams)
+			endpoints := []contracts.Endpoint{createProductEndpoint, getProductById}
 
-		return endpoints, nil
-	})
-	if err != nil {
-		return errors.WrapIf(err, "Error in mapping endpoints")
-	}
+			return endpoints, nil
+		},
+	)
 
 	return nil
 }
 
 func (b *ApplicationBuilder) addRepositories() error {
-	err := b.Container.Provide(func(g *gorm.DB, l logger.Logger) (contracts.ProductRepository, error) {
-		return repository.NewInMemoryProductRepository(g, l), nil
-	})
-	if err != nil {
-		return errors.WrapIf(err, "Error in registering repositories")
-	}
+	dependency.Add[contracts.ProductRepository](
+		b.ServiceCollection,
+		func(sp *dependency.ServiceProvider) (contracts.ProductRepository, error) {
+			gormDB := dependency.GetGenericRequiredService[*gorm.DB](sp)
+
+			return repository.NewProductRepositoryGorm(gormDB, b.Logger), nil
+		},
+	)
 
 	return nil
 }

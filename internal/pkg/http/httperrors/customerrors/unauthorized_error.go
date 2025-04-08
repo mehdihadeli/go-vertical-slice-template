@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewUnAuthorizedError(message string) UnauthorizedError {
 	// `NewPlain` doesn't add stack-trace at all
-	unAuthorizedErrMessage := errors.NewPlain("unauthorized error")
+	unAuthorizedErrMessage := errors.New("unauthorized error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(unAuthorizedErrMessage, message)
+	stackErr := errors.Wrap(unAuthorizedErrMessage, message)
 
 	unAuthorizedError := &unauthorizedError{
 		CustomError: NewCustomError(stackErr, http.StatusUnauthorized, message),
@@ -27,7 +27,7 @@ func NewUnAuthorizedErrorWrap(err error, message string) UnauthorizedError {
 	// `WithMessage` doesn't add stack-trace at all
 	unAuthorizedErrMessage := errors.WithMessage(err, "unauthorized error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(unAuthorizedErrMessage, message)
+	stackErr := errors.Wrap(unAuthorizedErrMessage, message)
 
 	unAuthorizedError := &unauthorizedError{
 		CustomError: NewCustomError(stackErr, http.StatusUnauthorized, message),

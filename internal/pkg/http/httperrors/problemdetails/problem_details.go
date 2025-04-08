@@ -11,7 +11,7 @@ import (
 	defaultLogger "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger/defaultlogger"
 	typeMapper "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/reflection/typemapper"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 const (

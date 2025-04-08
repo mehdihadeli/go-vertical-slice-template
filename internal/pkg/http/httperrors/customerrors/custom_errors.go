@@ -6,7 +6,7 @@ import (
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 // https://klotzandrew.com/blog/error-handling-in-golang

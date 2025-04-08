@@ -6,42 +6,42 @@ import (
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/database/options"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/glebarez/sqlite"
 	gormPostgres "gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func NewGorm(cfg *options.GormOptions) (*gorm.DB, error) {
-	if cfg.DBName == "" {
+func NewGorm(gormOptions *options.GormOptions) (*gorm.DB, error) {
+	if gormOptions.DBName == "" {
 		return nil, errors.New("DBName is required in the config.")
 	}
 
-	if cfg.UseSQLLite {
-		db, err := createSQLLiteDB(cfg.Dns())
+	if gormOptions.UseSQLLite {
+		db, err := createSQLLiteDB(gormOptions.Dns())
 
 		return db, err
 	}
 
 	// InMemory doesn't work correctly with transactions - seems when we `Begin` a transaction on gorm.DB (with SQLLite in-memory) our previous gormDB before transaction will remove and the new gormDB with tx will go on the memory
-	if cfg.UseInMemory {
+	if gormOptions.UseInMemory {
 		db, err := createInMemoryDB()
 
 		return db, err
 	}
 
-	err := createPostgresDB(cfg)
+	err := createPostgresDB(gormOptions)
 	if err != nil {
 		return nil, err
 	}
 
 	dataSourceName := fmt.Sprintf(
 		"host=%s port=%d user=%s dbname=%s password=%s",
-		cfg.Host,
-		cfg.Port,
-		cfg.User,
-		cfg.DBName,
-		cfg.Password,
+		gormOptions.Host,
+		gormOptions.Port,
+		gormOptions.User,
+		gormOptions.DBName,
+		gormOptions.Password,
 	)
 
 	gormDb, err := gorm.Open(

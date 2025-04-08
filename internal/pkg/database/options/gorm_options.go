@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/config/environemnt"
 )
 
 type GormOptions struct {
-	Host        string `mapstructure:"host"`
-	Port        int    `mapstructure:"port"`
+	Host        string `mapstructure:"host"        env:"GORM_OPTIONS_HOST"`
+	Port        int    `mapstructure:"port"        env:"GORM_OPTIONS_PORT"`
 	User        string `mapstructure:"user"`
 	DBName      string `mapstructure:"dbName"`
 	SSLMode     bool   `mapstructure:"sslMode"`
@@ -29,6 +30,6 @@ func (h *GormOptions) Dns() string {
 	return datasource
 }
 
-func ProvideConfig() (*GormOptions, error) {
-	return config.BindConfigKey[*GormOptions]("gormOptions")
+func ConfigGormOptions(environment environemnt.Environment) (*GormOptions, error) {
+	return config.BindConfigKey[*GormOptions]("gormOptions", environment)
 }

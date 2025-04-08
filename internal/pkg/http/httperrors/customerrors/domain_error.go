@@ -3,7 +3,7 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewDomainError(message string) DomainError {
@@ -12,9 +12,9 @@ func NewDomainError(message string) DomainError {
 
 func NewDomainErrorWithCode(message string, code int) DomainError {
 	// `NewPlain` doesn't add stack-trace at all
-	domainErrMessage := errors.NewPlain("domain error")
+	domainErrMessage := errors.New("domain error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(domainErrMessage, message)
+	stackErr := errors.Wrap(domainErrMessage, message)
 
 	domainError := &domainError{
 		CustomError: NewCustomError(stackErr, code, message),
@@ -35,7 +35,7 @@ func NewDomainErrorWithCodeWrap(err error, code int, message string) DomainError
 	// `WithMessage` doesn't add stack-trace at all
 	domainErrMessage := errors.WithMessage(err, "domain error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(domainErrMessage, message)
+	stackErr := errors.Wrap(domainErrMessage, message)
 
 	domainError := &domainError{
 		CustomError: NewCustomError(stackErr, code, message),

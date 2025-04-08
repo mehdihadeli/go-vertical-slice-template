@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewConflictError(message string) ConflictError {
 	// `NewPlain` doesn't add stack-trace at all
-	conflictErrMessage := errors.NewPlain("conflict error")
+	conflictErrMessage := errors.New("conflict error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(conflictErrMessage, message)
+	stackErr := errors.Wrap(conflictErrMessage, message)
 
 	conflictError := &conflictError{
 		CustomError: NewCustomError(stackErr, http.StatusConflict, message),
@@ -27,7 +27,7 @@ func NewConflictErrorWrap(err error, message string) ConflictError {
 	// `WithMessage` doesn't add stack-trace at all
 	conflictErrMessage := errors.WithMessage(err, "conflict error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(conflictErrMessage, message)
+	stackErr := errors.Wrap(conflictErrMessage, message)
 
 	conflictError := &conflictError{
 		CustomError: NewCustomError(stackErr, http.StatusConflict, message),

@@ -9,7 +9,6 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/constants"
 
 	"github.com/spf13/viper"
-	"go.uber.org/dig"
 )
 
 type (
@@ -19,7 +18,7 @@ type (
 
 type TestApp struct {
 	*App
-	overrides []*applicationbuilder.Override
+	overrides []applicationbuilder.Override
 }
 
 // NewTestApp creates a new App for test with optional configurations
@@ -30,27 +29,25 @@ func NewTestApp() *TestApp {
 	return app
 }
 
-func (a *TestApp) RunTest(t *testing.T) *dig.Container {
+func (a *TestApp) RunTest(t *testing.T) *application.Application {
 	builder := createApplicationBuilder()
 	// Apply override builder options
-	for _, opt := range a.overrides {
-		builder.WithOverride(opt.DecoratorFunc, opt.Opts...)
+	for _, override := range a.overrides {
+		builder.WithOverride(override)
 	}
 
 	app := builder.Build()
 
 	configureApplication(app)
 
-	container := app.Container
-
 	app.RunTest(t)
 
-	return container
+	return app
 }
 
 // WithOverrideBuilder Can override test configs here, or use our seperated `TestApplicationBuilder`
-func (a *TestApp) WithOverrideBuilder(decoratorFunc interface{}, opts ...dig.DecorateOption) *TestApp {
-	a.overrides = append(a.overrides, &applicationbuilder.Override{DecoratorFunc: decoratorFunc, Opts: opts})
+func (a *TestApp) WithOverrideBuilder(override applicationbuilder.Override) *TestApp {
+	a.overrides = append(a.overrides, override)
 
 	return a
 }

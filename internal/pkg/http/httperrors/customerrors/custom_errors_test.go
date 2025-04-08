@@ -8,7 +8,7 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/contracts"
 	errorUtils "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/utils/errorutils"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,7 +19,7 @@ func Test_Domain_Err(t *testing.T) {
 	)
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling domain_events errorUtils")
+	rootErr := errors.New("handling domain_events errorUtils")
 	domainErr := NewDomainErrorWithCodeWrap(rootErr, 400, "this is a domain_events errorUtils")
 	err := errors.WithMessage(domainErr, "outer errorUtils wrapper")
 
@@ -74,7 +74,7 @@ func Test_Application_Err(t *testing.T) {
 	)
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling application_exceptions errorUtils")
+	rootErr := errors.New("handling application_exceptions errorUtils")
 	appErr := NewApplicationErrorWrapWithCode(
 		rootErr,
 		400,
@@ -132,7 +132,7 @@ func Test_Api_Err(t *testing.T) {
 	)
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling api_exceptions errorUtils")
+	rootErr := errors.New("handling api_exceptions errorUtils")
 	appErr := NewApiErrorWrapWithCode(
 		rootErr,
 		400,
@@ -189,7 +189,7 @@ func Test_BadRequest_Err(t *testing.T) {
 	)
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling bad request errorUtils")
+	rootErr := errors.New("handling bad request errorUtils")
 	badErr := NewBadRequestErrorWrap(rootErr, "this is a bad request errorUtils")
 	err := errors.WithMessage(badErr, "outer errorUtils wrapper")
 
@@ -246,7 +246,7 @@ func Test_BadRequest_Err(t *testing.T) {
 
 func Test_NotFound_Err(t *testing.T) {
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling not found errorUtils")
+	rootErr := errors.New("handling not found errorUtils")
 	notFoundErr := NewNotFoundErrorWrap(rootErr, "this is a not found errorUtils")
 	err := errors.WithMessage(notFoundErr, "outer errorUtils wrapper")
 
@@ -294,7 +294,7 @@ func Test_NotFound_Err(t *testing.T) {
 
 func Test_Internal_Server_Error(t *testing.T) {
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling internal server errorUtils")
+	rootErr := errors.New("handling internal server errorUtils")
 	internalServerErr := NewInternalServerErrorWrap(rootErr, "this is a internal server errorUtils")
 	err := errors.WithMessage(internalServerErr, "outer errorUtils wrapper")
 
@@ -329,7 +329,7 @@ func Test_Internal_Server_Error(t *testing.T) {
 
 func Test_Forbidden_Error(t *testing.T) {
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling forbidden errorUtils")
+	rootErr := errors.New("handling forbidden errorUtils")
 	forbiddenError := NewForbiddenErrorWrap(rootErr, "this is a forbidden errorUtils")
 	err := errors.WithMessage(forbiddenError, "outer errorUtils wrapper")
 
@@ -368,7 +368,7 @@ func Test_Marshaling_Error(t *testing.T) {
 		fmt.Sprintf("domain_events event already exists in event registry"),
 	)
 
-	rootErr := errors.NewPlain("handling marshaling errorUtils")
+	rootErr := errors.New("handling marshaling errorUtils")
 	marshalErr := NewMarshalingErrorWrap(rootErr, "this is a marshaling errorUtils")
 	err := errors.WithMessage(marshalErr, "outer errorUtils wrapper")
 
@@ -460,7 +460,7 @@ func Test_Conflict_Error(t *testing.T) {
 	)
 
 	// `NewPlain` doesn't add stack-trace but `New` will add stack-trace
-	rootErr := errors.NewPlain("handling conflict errorUtils")
+	rootErr := errors.New("handling conflict errorUtils")
 	conflictErr := NewConflictErrorWrap(rootErr, "this is a conflict errorUtils")
 	err := errors.WithMessage(conflictErr, "this is a top error message")
 

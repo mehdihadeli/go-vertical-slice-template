@@ -38,13 +38,13 @@ var loggerLevelMap = map[string]zapcore.Level{
 
 // NewZapLogger create new zap logger
 func NewZapLogger(
-	cfg *LogOptions,
 	env environemnt.Environment,
-) Logger {
-	zapLogger := &zapLogger{level: cfg.LogLevel, logOptions: cfg}
+	logOptions *LogOptions,
+) (Logger, error) {
+	zapLogger := &zapLogger{level: logOptions.LogLevel, logOptions: logOptions}
 	zapLogger.initLogger(env)
 
-	return zapLogger
+	return zapLogger, nil
 }
 
 func (l *zapLogger) InternalLogger() *zap.Logger {

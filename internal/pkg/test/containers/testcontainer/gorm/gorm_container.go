@@ -11,7 +11,7 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/logger"
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/test/containers/contracts"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
@@ -67,11 +67,13 @@ func (g *gormTestContainers) PopulateContainerOptions(
 	//// if you want to terminate container manually you should set `hostConfig.AutoRemove = false`, because they can terminate container concurrently
 	//// Clean up the container after the test is complete
 	//t.Cleanup(func() {
-	//	terminateCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	//	defer cancel()
-	//	if err := dbContainer.Terminate(terminateCtx); err != nil {
-	//		t.Fatalf("failed to terminate container: %s", err)
-	//	}
+	//	//terminateCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	//	//defer cancel()
+	//	//if err := dbContainer.Terminate(terminateCtx); err != nil {
+	//	//	t.Fatalf("failed to terminate container: %s", err)
+	//	//}
+	//	// wait for cleanup
+	//	//time.Sleep(1 * time.Second)
 	//})
 
 	// get a free random host hostPort
@@ -122,7 +124,7 @@ func (g *gormTestContainers) Start(
 
 func (g *gormTestContainers) Cleanup(ctx context.Context) error {
 	if err := g.container.Terminate(ctx); err != nil {
-		return errors.WrapIf(err, "failed to terminate container: %s")
+		return errors.Wrap(err, "failed to terminate container: %s")
 	}
 	return nil
 }

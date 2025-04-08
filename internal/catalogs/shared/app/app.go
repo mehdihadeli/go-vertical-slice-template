@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/application"
-	applicationbuilder "github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/applicationbuilder"
+	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/shared/app/applicationbuilder"
 )
 
 type App struct{}
@@ -38,8 +38,12 @@ func configureApplication(app *application.Application) {
 func createApplicationBuilder() *applicationbuilder.ApplicationBuilder {
 	builder := applicationbuilder.NewApplicationBuilder()
 
-	builder.AddInfrastructure()
-	err := builder.AddCatalogs()
+	err := builder.AddInfrastructure()
+	if err != nil {
+		builder.Logger.Fatal(err)
+	}
+
+	err = builder.AddCatalogs()
 	if err != nil {
 		builder.Logger.Fatal(err)
 	}

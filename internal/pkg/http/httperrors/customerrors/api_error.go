@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewApiError(message string, code int) ApiError {
 	// `NewPlain` doesn't add stack-trace at all
-	apiErrMessage := errors.NewPlain("api error")
+	apiErrMessage := errors.New("api error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(apiErrMessage, message)
+	stackErr := errors.Wrap(apiErrMessage, message)
 
 	apiError := &apiError{
 		CustomError: NewCustomError(stackErr, code, message),
@@ -31,7 +31,7 @@ func NewApiErrorWrapWithCode(err error, code int, message string) ApiError {
 	// `WithMessage` doesn't add stack-trace at all
 	apiErrMessage := errors.WithMessage(err, "api error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(apiErrMessage, message)
+	stackErr := errors.Wrap(apiErrMessage, message)
 
 	apiError := &apiError{
 		CustomError: NewCustomError(stackErr, code, message),

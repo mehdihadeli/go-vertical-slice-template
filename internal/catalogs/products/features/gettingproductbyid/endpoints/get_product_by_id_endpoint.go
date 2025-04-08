@@ -9,7 +9,7 @@ import (
 	"github.com/mehdihadeli/go-vertical-slice-template/internal/catalogs/products/features/gettingproductbyid/queries"
 	customErrors "github.com/mehdihadeli/go-vertical-slice-template/internal/pkg/http/httperrors/customerrors"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 	"github.com/labstack/echo/v4"
 	"github.com/mehdihadeli/go-mediatr"
 )

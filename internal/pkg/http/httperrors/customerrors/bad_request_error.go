@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewBadRequestError(message string) BadRequestError {
 	// `NewPlain` doesn't add stack-trace at all
-	badRequestErrMessage := errors.NewPlain("bad request error")
+	badRequestErrMessage := errors.New("bad request error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(badRequestErrMessage, message)
+	stackErr := errors.Wrap(badRequestErrMessage, message)
 
 	badRequestError := &badRequestError{
 		CustomError: NewCustomError(stackErr, http.StatusBadRequest, message),
@@ -27,7 +27,7 @@ func NewBadRequestErrorWrap(err error, message string) BadRequestError {
 	// `WithMessage` doesn't add stack-trace at all
 	badRequestErrMessage := errors.WithMessage(err, "bad request error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(badRequestErrMessage, message)
+	stackErr := errors.Wrap(badRequestErrMessage, message)
 
 	badRequestError := &badRequestError{
 		CustomError: NewCustomError(stackErr, http.StatusBadRequest, message),

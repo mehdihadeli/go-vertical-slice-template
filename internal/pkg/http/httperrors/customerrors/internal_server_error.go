@@ -3,14 +3,14 @@ package customErrors
 import (
 	"net/http"
 
-	"emperror.dev/errors"
+	"github.com/cockroachdb/errors"
 )
 
 func NewInternalServerError(message string) InternalServerError {
 	// `NewPlain` doesn't add stack-trace at all
-	internalErrMessage := errors.NewPlain("internal server error")
+	internalErrMessage := errors.New("internal server error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(internalErrMessage, message)
+	stackErr := errors.Wrap(internalErrMessage, message)
 
 	internalServerError := &internalServerError{
 		CustomError: NewCustomError(stackErr, http.StatusInternalServerError, message),
@@ -27,7 +27,7 @@ func NewInternalServerErrorWrap(err error, message string) InternalServerError {
 	// `WithMessage` doesn't add stack-trace at all
 	internalErrMessage := errors.WithMessage(err, "internal server error")
 	// `WrapIf` add stack-trace if not added before
-	stackErr := errors.WrapIf(internalErrMessage, message)
+	stackErr := errors.Wrap(internalErrMessage, message)
 
 	internalServerError := &internalServerError{
 		CustomError: NewCustomError(stackErr, http.StatusInternalServerError, message),
